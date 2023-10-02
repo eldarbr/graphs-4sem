@@ -1,21 +1,28 @@
 package problem.shared;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class Graph {
 
-    private int vertexCount;
+    private final int vertexCount;
     private int[][] graphAdjacencyMatrix;
+    GraphDirectedProperty directedProperty;
 
     public Graph(String filepath, GraphSourceType type) throws IOException {
-        readGraph(filepath, type);
+        vertexCount = readGraph(filepath, type);
+        directedProperty = new GraphDirectedProperty();
     }
 
-    private void readGraph(String filepath, GraphSourceType type) throws IOException {
+    private int readGraph(String filepath, GraphSourceType type) throws IOException {
         throw new UnsupportedOperationException("needs implementation");
     }
 
+
+    public int getVertexCount() {
+        return vertexCount;
+    }
 
     public int weight(int vi, int vj) {
         throw new UnsupportedOperationException("needs implementation");
@@ -42,6 +49,42 @@ public class Graph {
     }
 
     public boolean isADirectedGraph() {
-        throw new UnsupportedOperationException("needs implementation");
+        return directedProperty.isDirected(graphAdjacencyMatrix);
     }
+}
+
+class GraphDirectedProperty {
+    private boolean isDirected;
+    private int prevArrayHash;
+    private boolean initialised;
+
+    GraphDirectedProperty() {
+        prevArrayHash = 0;
+        initialised = false;
+        isDirected = false;
+    }
+
+    boolean isDirected(int[][] adjacencyMatrix) {
+        int newHashCode = Arrays.deepHashCode(adjacencyMatrix);
+        if (!initialised || prevArrayHash != newHashCode) {
+            isDirected = calculateIsADirectedGraph(adjacencyMatrix);
+            initialised = true;
+            prevArrayHash = newHashCode;
+        }
+        return isDirected;
+    }
+
+    static boolean calculateIsADirectedGraph(int[][] adjacencyMatrix) {
+        boolean isDirected = false;
+        for (int i = 0; i < adjacencyMatrix.length; i++) {
+            for (int j = i+1; j < adjacencyMatrix.length; j++) {
+                if (adjacencyMatrix[i][j] != adjacencyMatrix[j][i]) {
+                    isDirected = true;
+                    return isDirected;
+                }
+            }
+        }
+        return isDirected;
+    }
+
 }
