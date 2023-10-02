@@ -48,12 +48,33 @@ public class Graph {
         return adjacentVertices;
     }
 
-    public List<Integer> getGraphEdgesList() {
-        throw new UnsupportedOperationException("needs implementation");
+    public List<List<Integer>> getGraphEdgesList() {
+        List<List<Integer>> edges = new ArrayList<>();
+        for (int i = 0; i < verticesCount; i++) {
+            for (int j = 0; j < verticesCount; j++) {
+                if (graphAdjacencyMatrix[i][j] != 0) {
+                    List<Integer> newEdge = new ArrayList<>();
+                    newEdge.add(i);
+                    newEdge.add(j);
+                    newEdge.add(graphAdjacencyMatrix[i][j]);
+                    edges.add(newEdge);
+                }
+            }
+        }
+        return edges;
     }
 
-    public List<Integer> getVertexEdgesList(final int v) {
-        throw new UnsupportedOperationException("needs implementation");
+    public List<List<Integer>> getVertexEdgesList(final int v) {
+        List<List<Integer>> edges = new ArrayList<>();
+        for (int i = 0; i < verticesCount; i++) {
+            if (graphAdjacencyMatrix[v][i] != 0) {
+                List<Integer> newEdge = new ArrayList<>();
+                newEdge.add(i);
+                newEdge.add(graphAdjacencyMatrix[v][i]);
+                edges.add(newEdge);
+            }
+        }
+        return edges;
     }
 
     public boolean isADirectedGraph() {
