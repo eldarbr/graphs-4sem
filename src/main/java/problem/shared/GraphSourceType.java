@@ -1,5 +1,5 @@
 package problem.shared;
 
 public enum GraphSourceType {
-    ListOfEdges, ListOfAdjacency, AdjacencyMatrix
+    ListOfEdges, ListOfAdjacency, AdjacencyMatrix, UNSUPPORTED
 }
