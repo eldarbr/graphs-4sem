@@ -7,20 +7,25 @@ import java.util.*;
 public class Graph {
 
     private final int verticesCount;
-    private int[][] graphAdjacencyMatrix;
+    private final int[][] graphAdjacencyMatrix;
     GraphDirectedProperty directedProperty;
 
     public Graph(final String filepath, final GraphSourceType type) throws FileNotFoundException {
-        verticesCount = readGraph(filepath, type);
+        graphAdjacencyMatrix = new GraphReader(filepath, type).readData();
+        verticesCount = graphAdjacencyMatrix.length;
         directedProperty = new GraphDirectedProperty();
     }
 
-    private int readGraph(final String filepath, final GraphSourceType type)
-            throws FileNotFoundException {
-        graphAdjacencyMatrix = new GraphReader(filepath, type).readData();
-        return graphAdjacencyMatrix.length;
+    public Graph(final int[][] graphAdjacencyMatrix) {
+        for (int i = 0; i < graphAdjacencyMatrix.length; i++) {
+            if (graphAdjacencyMatrix[i].length!=graphAdjacencyMatrix.length) {
+                throw new IllegalArgumentException("not a quadratic matrix");
+            }
+        }
+        this.graphAdjacencyMatrix = graphAdjacencyMatrix.clone();
+        this.verticesCount = graphAdjacencyMatrix.length;
+        directedProperty = new GraphDirectedProperty();
     }
-
 
     public int getVerticesCount() {
         return verticesCount;
