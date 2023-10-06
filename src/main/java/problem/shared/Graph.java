@@ -72,7 +72,7 @@ public class Graph {
     public List<List<Integer>> getVertexEdgesList(final int v) {
         List<List<Integer>> edges = new ArrayList<>();
         for (int i = 0; i < verticesCount; i++) {
-            if (graphAdjacencyMatrix[v][i] != 0) {
+            if (isEdge(v, i)) {
                 List<Integer> newEdge = new ArrayList<>();
                 newEdge.add(i);
                 newEdge.add(graphAdjacencyMatrix[v][i]);
