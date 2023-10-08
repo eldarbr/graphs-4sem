@@ -70,4 +70,39 @@ public class GraphSearch {
         }
         order.add(vertex);
     }
+
+    public static void DFSBridges(final Graph sourceGraph, int currentVertex, Integer prevVertex,
+                                  boolean[] visitedVertices, int[] tin, int[] tout, int tick,
+                                  List<int[]> bridges, List<Integer> pivots) {
+
+        visitedVertices[currentVertex] = true;
+        tin[currentVertex] = tick;
+        tout[currentVertex] = tick;
+
+        int children = 0;
+
+        for (int adjVert : sourceGraph.getVertexAdjacencyList(currentVertex)) {
+            if (prevVertex != null) {
+                if (prevVertex == adjVert) {
+                    continue;
+                }
+            }
+            if (visitedVertices[adjVert]) {
+                tout[currentVertex] = Math.min(tout[currentVertex], tin[adjVert]);
+            } else {
+                DFSBridges(sourceGraph, adjVert, currentVertex, visitedVertices, tin, tout, tick+1, bridges, pivots);
+                tout[currentVertex] = Math.min(tout[currentVertex], tout[adjVert]);
+                if (prevVertex != null && tin[currentVertex] <= tout[adjVert]) {
+                    pivots.add(currentVertex);
+                }
+                if (tin[currentVertex] < tout[adjVert]) {
+                    bridges.add(new int[]{currentVertex,adjVert});
+                }
+                children++;
+            }
+        }
+        if (prevVertex != null && children > 1) {
+            pivots.add(currentVertex);
+        }
+    }
 }

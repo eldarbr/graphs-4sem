@@ -1,7 +1,7 @@
 package problem.second;
 
 import problem.shared.Graph;
-import problem.shared.GraphMathOperations;
+import problem.algorithms.GraphMathOperations;
 import problem.shared.TaskSpecCalculationResult;
 
 import java.util.List;
@@ -16,13 +16,12 @@ public class SecondTaskOperations {
 
 
 
-    public SecondTaskOperations(final Graph graph) {
-        sourceGraph = graph;
-
+    public SecondTaskOperations(final Graph sourceGraph) {
+        this.sourceGraph = sourceGraph;
         calculateSpecs();
     }
 
-    protected void calculateSpecs() {
+    private void calculateSpecs() {
         weakConnectionComponents.setSpec(GraphMathOperations.calculateWeakConnections(sourceGraph));
         if (sourceGraph.isADirectedGraph()) {
             strongConnectionComponents.setSpec(GraphMathOperations.calculateStrongConnections(sourceGraph));

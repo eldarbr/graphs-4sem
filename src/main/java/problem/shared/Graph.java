@@ -53,15 +53,20 @@ public class Graph {
         return adjacentVertices;
     }
 
+    // source - dest - weight
     public List<List<Integer>> getGraphEdgesList() {
         List<List<Integer>> edges = new ArrayList<>();
         for (int i = 0; i < verticesCount; i++) {
-            for (int j = 0; j < verticesCount; j++) {
+            int j = i;
+            if (isADirectedGraph()) {
+                j = 0;
+            }
+            for (; j < verticesCount; j++) {
                 if (graphAdjacencyMatrix[i][j] != 0) {
                     List<Integer> newEdge = new ArrayList<>();
                     newEdge.add(i);
                     newEdge.add(j);
-                    newEdge.add(graphAdjacencyMatrix[i][j]);
+                    newEdge.add(weight(i, j));
                     edges.add(newEdge);
                 }
             }
@@ -74,6 +79,7 @@ public class Graph {
         for (int i = 0; i < verticesCount; i++) {
             if (isEdge(v, i)) {
                 List<Integer> newEdge = new ArrayList<>();
+                newEdge.add(v);
                 newEdge.add(i);
                 newEdge.add(graphAdjacencyMatrix[v][i]);
                 edges.add(newEdge);

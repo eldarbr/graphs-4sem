@@ -1,7 +1,7 @@
 package problem.first;
 
 import problem.shared.Graph;
-import problem.shared.GraphMathOperations;
+import problem.algorithms.GraphMathOperations;
 import problem.shared.TaskSpecCalculationResult;
 import problem.algorithms.CommonAlgorithms;
 
@@ -21,14 +21,12 @@ public class FirstTaskOperations {
     private final TaskSpecCalculationResult<Integer> graphDiameter = new TaskSpecCalculationResult<>();
 
 
-    public FirstTaskOperations(final Graph graph) {
-        sourceGraph = graph;
-
+    public FirstTaskOperations(final Graph sourceGraph) {
+        this.sourceGraph = sourceGraph;
         calculateSpecs();
     }
 
-
-    protected void calculateSpecs() {
+    private void calculateSpecs() {
 
         this.shortestDistMatrix.setSpec(CommonAlgorithms.floydWarshallShortestDist(sourceGraph));
 
