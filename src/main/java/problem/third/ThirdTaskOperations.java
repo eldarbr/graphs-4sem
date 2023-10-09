@@ -14,7 +14,8 @@ public class ThirdTaskOperations {
     private TaskSpecCalculationResult<List<Integer>> pivots = new TaskSpecCalculationResult<>();
 
     public ThirdTaskOperations(final Graph sourceGraph) {
-        this.sourceGraph = sourceGraph;
+        this.sourceGraph = Graph.deepCopy(sourceGraph);
+        this.sourceGraph.transformToRelatedGraph();
         calculateSpecs();
     }
 

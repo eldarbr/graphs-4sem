@@ -59,7 +59,7 @@ public class CommonAlgorithmsTest {
                 {1,4,6,7,0}
         });
 
-        for (List<Integer> edge : CommonAlgorithms.BoruvkasMST(src)) {
+        for (List<Integer> edge : CommonAlgorithms.boruvkasMST(src)) {
             System.out.print(edge.get(0));
             System.out.print(edge.get(1));
             System.out.println(edge.get(2));

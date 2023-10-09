@@ -81,7 +81,7 @@ public class Graph {
                 List<Integer> newEdge = new ArrayList<>();
                 newEdge.add(v);
                 newEdge.add(i);
-                newEdge.add(graphAdjacencyMatrix[v][i]);
+                newEdge.add(weight(v, i));
                 edges.add(newEdge);
             }
         }
@@ -90,6 +90,28 @@ public class Graph {
 
     public boolean isADirectedGraph() {
         return directedProperty.isDirected(graphAdjacencyMatrix);
+    }
+
+
+    public static Graph deepCopy(final Graph sourceGraph) {
+
+        int verticesCount = sourceGraph.getVerticesCount();
+        int[][] newAdjMatrix = new int[verticesCount][];
+        for (int i = 0; i < newAdjMatrix.length; i++) {
+            newAdjMatrix[i] = Arrays.copyOf(sourceGraph.getGraphAdjacencyMatrix()[i], verticesCount);
+        }
+
+        return new Graph(newAdjMatrix);
+    }
+
+    public void transformToRelatedGraph() {
+        for (int i = 0; i < verticesCount; i++) {
+            for (int j = 0; j < verticesCount; j++) {
+                if (graphAdjacencyMatrix[i][j] != 0) {
+                    graphAdjacencyMatrix[j][i] = graphAdjacencyMatrix[i][j];
+                }
+            }
+        }
     }
 }
 
@@ -165,8 +187,8 @@ class GraphReader {
     private static int[][] convertEdgesListToMatrix(final List<List<Integer>> dataList) {
         TreeSet<Integer> vertices = new TreeSet<>();
         for (List<Integer> edgeInfo : dataList) {
-            vertices.add(edgeInfo.get(0));
-            vertices.add(edgeInfo.get(1));
+            vertices.add(edgeInfo.get(0)-1);
+            vertices.add(edgeInfo.get(1)-1);
         }
 
         int verticesCount = vertices.last()+1;
@@ -179,13 +201,13 @@ class GraphReader {
 
 
         for (List<Integer> edgeInfo : dataList) {
-            if (dataArr[edgeInfo.get(0)][edgeInfo.get(1)] != 0) {
+            if (dataArr[edgeInfo.get(0)-1][edgeInfo.get(1)-1] != 0) {
                 throw new IllegalArgumentException("File content is improper: edge is contained twice or more times");
             }
             if (weighted) {
-                dataArr[edgeInfo.get(0)][edgeInfo.get(1)] = edgeInfo.get(2);
+                dataArr[edgeInfo.get(0)-1][edgeInfo.get(1)-1] = edgeInfo.get(2);
             } else {
-                dataArr[edgeInfo.get(0)][edgeInfo.get(1)] = 1;
+                dataArr[edgeInfo.get(0)-1][edgeInfo.get(1)-1] = 1;
             }
         }
         return dataArr;
@@ -223,7 +245,7 @@ class GraphReader {
         int vertexIndex = 0;
         for (List<Integer> vertexAdj : dataList) {
             for (int destination : vertexAdj) {
-                dataArr[vertexIndex][destination] = 1;
+                dataArr[vertexIndex][destination-1] = 1;
             }
             vertexIndex++;
         }

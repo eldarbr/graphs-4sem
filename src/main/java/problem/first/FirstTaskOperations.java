@@ -22,7 +22,7 @@ public class FirstTaskOperations {
 
 
     public FirstTaskOperations(final Graph sourceGraph) {
-        this.sourceGraph = sourceGraph;
+        this.sourceGraph = Graph.deepCopy(sourceGraph);
         calculateSpecs();
     }
 
@@ -36,9 +36,10 @@ public class FirstTaskOperations {
         this.graphRadius.setSpec(radiusAndDiameter.get(0));
         this.graphDiameter.setSpec(radiusAndDiameter.get(1));
 
-        this.centralVertices.setSpec(GraphMathOperations.calculateCentralVertices(eccentricity.getSpec(), graphRadius.getSpec()));
-
-        this.peripheralVertices.setSpec(GraphMathOperations.calculatePeripheralVertices(eccentricity.getSpec(), graphDiameter.getSpec()));
+        if (!sourceGraph.isADirectedGraph()) {
+            this.centralVertices.setSpec(GraphMathOperations.calculateCentralVertices(eccentricity.getSpec(), graphRadius.getSpec()));
+            this.peripheralVertices.setSpec(GraphMathOperations.calculatePeripheralVertices(eccentricity.getSpec(), graphDiameter.getSpec()));
+        }
 
         this.verticesDegree.setSpec(GraphMathOperations.calculateVerticesDegree(sourceGraph));
     }

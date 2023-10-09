@@ -40,7 +40,7 @@ public class GraphReaderTest {
     @Test
     public void listOfAdjacencyLegitFileShort() {
 
-        String data = "1 2\n2\n0 2";
+        String data = "2 3\n3\n1 3";
         int[][] expected = {
                 {0,1,1},
                 {0,0,1},
@@ -69,7 +69,7 @@ public class GraphReaderTest {
     @Test
     public void listOfAdjacencyLegitFileLotOfEmptyLines() {
 
-        String data = "0 1\n\n\n\n\n\n\n\n\n\n\n0";
+        String data = "1 2\n\n\n\n\n\n\n\n\n\n\n1";
         int[][] expected = {
                 {1,1,0,0,0,0,0,0,0,0,0,0},
                 {0,0,0,0,0,0,0,0,0,0,0,0},
@@ -123,7 +123,7 @@ public class GraphReaderTest {
     @Test
     public void listOfEdgesLegitFileWeightedShort() {
 
-        String data = "0 1 10\n0 0 1\n1 0 3\n1 2 4\n 2 2 2";
+        String data = "1 2 10\n1 1 1\n2 1 3\n2 3 4\n 3 3 2";
         int[][] expected = {
                 {1,10,0},
                 {3,0,4},
@@ -152,7 +152,7 @@ public class GraphReaderTest {
     @Test
     public void listOfEdgesLegitFileWeightedLong() {
 
-        String data = "1 2 10\n1 8 11\n1 9 12\n1 4 13\n1 0 14\n2 1 15\n3 2 16\n4 6 17\n4 2 18\n4 8 19\n5 9 10\n8 7 11\n6 4 12\n6 6 13\n6 3 14\n6 8 15\n7 5 16\n7 0 17\n9 5 18\n9 0 19";
+        String data = "2 3 10\n2 9 11\n2 10 12\n2 5 13\n2 1 14\n3 2 15\n4 3 16\n5 7 17\n5 3 18\n5 9 19\n6 10 10\n9 8 11\n7 5 12\n7 7 13\n7 4 14\n7 9 15\n8 6 16\n8 1 17\n10 6 18\n10 1 19";
         int[][] expected = {
                 {0,0,0,0,0,0,0,0,0,0},
                 {14,0,10,0,13,0,0,0,11,12},
@@ -188,7 +188,7 @@ public class GraphReaderTest {
     @Test
     public void listOfEdgesLegitFileNotWeightedShort() {
 
-        String data = "0 1\n0 0\n1 0\n1 2\n 2 2";
+        String data = "1 2\n1 1\n2 1\n2 3\n 3 3";
         int[][] expected = {
                 {1,1,0},
                 {1,0,1},
@@ -217,7 +217,7 @@ public class GraphReaderTest {
     @Test
     public void listOfEdgesLegitFileNotWeightedLong() {
 
-        String data = "1 2\n1 8\n1 9\n1 4\n1 0\n2 1\n3 2\n4 6\n4 2\n4 8\n5 9\n8 7\n6 4\n6 6\n6 3\n6 8\n7 5\n7 0\n9 5\n9 0";
+        String data = "2 3\n2 9\n2 10\n2 5\n2 1\n3 2\n4 3\n5 7\n5 3\n5 9\n6 10\n9 8\n7 5\n7 7\n7 4\n7 9\n8 6\n8 1\n10 6\n10 1";
         int[][] expected = {
                 {0,0,0,0,0,0,0,0,0,0},
                 {1,0,1,0,1,0,0,0,1,1},
@@ -253,7 +253,7 @@ public class GraphReaderTest {
     @Test
     public void listOfEdgesEdgeComesTwice() {
 
-        String data = "0 1\n0 1\n1 0\n1 2\n 2 2";
+        String data = "1 2\n1 2\n2 1\n2 3\n 3 3";
 
 
         File tempFile;

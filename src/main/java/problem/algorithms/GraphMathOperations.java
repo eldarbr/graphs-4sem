@@ -94,27 +94,16 @@ public class GraphMathOperations {
         List<List<Integer>> components = new ArrayList<>();
         boolean[] visitedVertices = new boolean[verticesCount];
 
-
-        int[][] adjMatrixCopy = new int[verticesCount][verticesCount];
-        for (int i = 0; i < verticesCount; i++) {
-            adjMatrixCopy[i] = Arrays.copyOf(sourceGraph.getGraphAdjacencyMatrix()[i], verticesCount);
-        }
+        Graph myGraph = Graph.deepCopy(sourceGraph);
+        myGraph.transformToRelatedGraph();
 
         for (int i = 0; i < verticesCount; i++) {
-            for (int j = 0; j < verticesCount; j++) {
-                if (adjMatrixCopy[i][j] != 0) {
-                    adjMatrixCopy[j][i] = adjMatrixCopy[i][j];
-                }
-            }
-        }
-
-        for (int i = 0; i < verticesCount; i++) {
-            boolean[] newVisitedVertices = GraphSearch.BFSConnectedness(new Graph(adjMatrixCopy), i, visitedVertices);
+            boolean[] newVisitedVertices = GraphSearch.BFSConnectedness(myGraph, i, visitedVertices);
             if (!visitedVertices[i]) {
                 List<Integer> currentComponents = new ArrayList<>();
                 for (int j = 0; j < verticesCount; j++) {
                     if (newVisitedVertices[j]) {
-                        currentComponents.add(j+1);
+                        currentComponents.add(j);
                     }
                 }
                 components.add(currentComponents);
@@ -142,6 +131,8 @@ public class GraphMathOperations {
             }
         }
         Graph transposedSorted = new Graph(adjMatrixCopyTransposed);
+
+
         GraphMathOperations.sortTopologically(transposedSorted);
 
         for (int i = 0; i < verticesCount; i++) {
@@ -150,7 +141,7 @@ public class GraphMathOperations {
                 List<Integer> currentComponents = new ArrayList<>();
                 for (int j = 0; j < verticesCount; j++) {
                     if (newVisitedVertices[j]) {
-                        currentComponents.add(j+1);
+                        currentComponents.add(j);
                     }
                 }
                 components.add(currentComponents);
@@ -165,14 +156,14 @@ public class GraphMathOperations {
         return components;
     }
 
-    public static List<Integer> sortTopologically(final Graph graph) {
-        int verticesCount = graph.getVerticesCount();
+    public static List<Integer> sortTopologically(final Graph sourceGraph) {
+        int verticesCount = sourceGraph.getVerticesCount();
         boolean[] visitedVertices = new boolean[verticesCount];
         List<Integer> order = new ArrayList<>();
 
         for (int v = 0; v < verticesCount; v++) {
             if (!visitedVertices[v]) {
-                GraphSearch.DFS(graph, order, visitedVertices, v);
+                GraphSearch.DFS(sourceGraph, order, visitedVertices, v);
             }
         }
         Collections.reverse(order);
@@ -181,22 +172,15 @@ public class GraphMathOperations {
 
     public static Object[] findBridgesAndPivots(final Graph sourceGraph) {
 
+        if (sourceGraph.isADirectedGraph()) {
+            throw new IllegalArgumentException("no directed graphs are allowed");
+        }
+
+
         int verticesCount = sourceGraph.getVerticesCount();
 
-        final int[][] myAdjacencyMatrix = new int[verticesCount][];
-        for (int i = 0; i < myAdjacencyMatrix.length; i++) {
-            myAdjacencyMatrix[i] = Arrays.copyOf(sourceGraph.getGraphAdjacencyMatrix()[i], verticesCount);
-        }
+        Graph myGraph = Graph.deepCopy(sourceGraph);
 
-        for (int i = 0; i < verticesCount; i++) {
-            for (int j = 0; j < verticesCount; j++) {
-                if (myAdjacencyMatrix[i][j] != 0) {
-                    myAdjacencyMatrix[j][i] = myAdjacencyMatrix[i][j];
-                }
-            }
-        }
-
-        Graph myGraph = new Graph(myAdjacencyMatrix);
         int[] tin = new int[verticesCount];
         int[] tup = new int[verticesCount];
         for (int i = 0; i < verticesCount; i++) {

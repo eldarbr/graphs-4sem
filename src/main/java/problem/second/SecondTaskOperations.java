@@ -17,7 +17,7 @@ public class SecondTaskOperations {
 
 
     public SecondTaskOperations(final Graph sourceGraph) {
-        this.sourceGraph = sourceGraph;
+        this.sourceGraph = Graph.deepCopy(sourceGraph);
         calculateSpecs();
     }
 
@@ -48,5 +48,20 @@ public class SecondTaskOperations {
             throw new UnsupportedOperationException("The graph is not a directed graph");
         }
         return strongConnectionComponents.getSpec().size();
+    }
+
+    public boolean getGraphConnectedness() {
+        return weakConnectionComponents.getSpec().size() == 1;
+    }
+
+    public boolean getDirGraphStrongConnectedness() {
+        if (strongConnectionComponents.getIsCalculated()) {
+            return strongConnectionComponents.getSpec().size() == 1;
+        }
+        return false;
+    }
+
+    public boolean isADirectedGraph() {
+        return sourceGraph.isADirectedGraph();
     }
 }

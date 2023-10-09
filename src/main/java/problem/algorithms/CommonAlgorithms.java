@@ -3,10 +3,7 @@ package problem.algorithms;
 import problem.shared.DisjointSet;
 import problem.shared.Graph;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class CommonAlgorithms {
 
@@ -112,7 +109,7 @@ public class CommonAlgorithms {
         return MST;
     }
 
-    public static List<List<Integer>> BoruvkasMST(final Graph sourceGraph) {
+    public static List<List<Integer>> boruvkasMST(final Graph sourceGraph) {
         if (sourceGraph.isADirectedGraph()) {
             throw new IllegalArgumentException("no directed graphs are allowed");
         }
@@ -156,5 +153,44 @@ public class CommonAlgorithms {
         }
 
         return MST;
+    }
+
+    public static Object[] DijkstraShortestPath(final Graph sourceGraph, int srcV, int destV) {
+
+        int verticesCount = sourceGraph.getVerticesCount();
+        LinkedList<int[]> verticesQueue = new LinkedList<>();
+        int[] distanceArray = new int[verticesCount];
+        Arrays.fill(distanceArray, Constants.INF);
+        int[] pathArray = new int[verticesCount];
+        Arrays.fill(pathArray, -1);
+
+        verticesQueue.add(new int[] {0, srcV});
+
+        while (!verticesQueue.isEmpty()) {
+            int currentVert = verticesQueue.poll()[1];
+            List<List<Integer>> currIncEdges = sourceGraph.getVertexEdgesList(currentVert);
+
+            for (List<Integer> edge : currIncEdges) {
+                if ((distanceArray[currentVert] + edge.get(2)) < distanceArray[edge.get(1)]) {
+                    distanceArray[edge.get(1)] = distanceArray[currentVert] + edge.get(2);
+                    pathArray[edge.get(1)] = currentVert;
+                    verticesQueue.add(new int[] { distanceArray[edge.get(1)], edge.get(1) });
+                }
+            }
+        }
+
+        List<List<Integer>> pathEdges = new ArrayList<>();
+        for (int curEdge = destV; curEdge != srcV;) {
+            List<Integer> edge = new ArrayList<>();
+            edge.add(pathArray[curEdge]);
+            edge.add(curEdge);
+            edge.add(sourceGraph.weight(edge.get(0), edge.get(1)));
+            pathEdges.add(0, edge);
+
+            curEdge = pathArray[curEdge];
+        }
+
+
+        return new Object[]{distanceArray[destV], pathEdges};
     }
 }
