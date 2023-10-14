@@ -4,6 +4,7 @@ import ru.bagirov.problem.shared.Graph;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Set;
 
 public class GraphSearch {
 
@@ -73,7 +74,8 @@ public class GraphSearch {
 
     public static void DFSBridges(final Graph sourceGraph, int currentVertex, Integer prevVertex,
                                   boolean[] visitedVertices, int[] tin, int[] tout, int tick,
-                                  List<int[]> bridges, List<Integer> pivots) {
+                                  List<int[]> bridges, Set<Integer> pivots) {
+
 
         visitedVertices[currentVertex] = true;
         tin[currentVertex] = tick;
@@ -81,27 +83,31 @@ public class GraphSearch {
 
         int children = 0;
 
-        for (int adjVert : sourceGraph.getVertexAdjacencyList(currentVertex)) {
+        for (int adjacentVertex : sourceGraph.getVertexAdjacencyList(currentVertex)) {
             if (prevVertex != null) {
-                if (prevVertex == adjVert) {
+                if (prevVertex == adjacentVertex) {
                     continue;
                 }
             }
-            if (visitedVertices[adjVert]) {
-                tout[currentVertex] = Math.min(tout[currentVertex], tin[adjVert]);
+
+            if (visitedVertices[adjacentVertex]) {
+                tout[currentVertex] = Math.min(tout[currentVertex], tin[adjacentVertex]);
             } else {
-                DFSBridges(sourceGraph, adjVert, currentVertex, visitedVertices, tin, tout, tick+1, bridges, pivots);
-                tout[currentVertex] = Math.min(tout[currentVertex], tout[adjVert]);
-                if (prevVertex != null && tin[currentVertex] <= tout[adjVert]) {
-                    pivots.add(currentVertex);
+                DFSBridges(sourceGraph, adjacentVertex, currentVertex, visitedVertices, tin, tout, tick+1, bridges, pivots);
+
+                tout[currentVertex] = Math.min(tout[currentVertex], tout[adjacentVertex]);
+                if (tin[currentVertex] < tout[adjacentVertex]) {
+                    bridges.add(new int[] {currentVertex, adjacentVertex});
                 }
-                if (tin[currentVertex] < tout[adjVert]) {
-                    bridges.add(new int[]{currentVertex,adjVert});
+
+                if (tin[currentVertex] <= tout[adjacentVertex] && prevVertex != null) {
+                    pivots.add(currentVertex);
                 }
                 children++;
             }
         }
-        if (prevVertex != null && children > 1) {
+
+        if (prevVertex == null && children > 1) {
             pivots.add(currentVertex);
         }
     }

@@ -2,9 +2,7 @@ package ru.bagirov.problem.algorithms;
 
 import ru.bagirov.problem.shared.Graph;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class GraphMathOperations {
 
@@ -27,6 +25,7 @@ public class GraphMathOperations {
         int radius = Constants.INF;
         int diameter = -Constants.INF;
         final int verticesCount = eccentricity.length;
+        //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < verticesCount; i++) {
             if (eccentricity[i] < radius) {
                 radius = eccentricity[i];
@@ -182,18 +181,17 @@ public class GraphMathOperations {
 
         Graph myGraph = Graph.deepCopy(sourceGraph);
 
-        int[] tin = new int[verticesCount];
-        int[] tup = new int[verticesCount];
-        for (int i = 0; i < verticesCount; i++) {
-            tin[i] = Integer.MAX_VALUE;
-            tup[i] = Integer.MAX_VALUE;
-        }
+        int[] tin = new int[verticesCount]; // keep track when for the first time that particular vertex is reached
+
+        // keep track of the lowest possible time by which we can reach that vertex ‘other than parent’
+        int[] tout = new int[verticesCount]; // if edge from parent is removed can the particular node can be reached other than parent
+
         boolean[] visitedVertices = new boolean[verticesCount];
         List<int[]> bridges = new ArrayList<>();
-        List<Integer> pivots = new ArrayList<>();
+        Set<Integer> pivots = new TreeSet<>();
 
         for (int n = 0; n < verticesCount; n++) {
-            GraphSearch.DFSBridges(myGraph, n, null, visitedVertices, tin, tup, 0, bridges, pivots);
+            GraphSearch.DFSBridges(myGraph, n, null, visitedVertices, tin, tout, 0, bridges, pivots);
         }
 
         return new Object[]{bridges, pivots};

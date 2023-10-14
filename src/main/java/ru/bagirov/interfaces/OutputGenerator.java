@@ -3,6 +3,7 @@ package ru.bagirov.interfaces;
 import ru.bagirov.problem.algorithms.Constants;
 
 import java.util.List;
+import java.util.Set;
 
 public class OutputGenerator {
 
@@ -199,7 +200,7 @@ public class OutputGenerator {
         return sb.toString();
     }
 
-    public static String ThirdTaskOutputGenerator(List<int[]> bridges, List<Integer> pivots) {
+    public static String ThirdTaskOutputGenerator(List<int[]> bridges, Set<Integer> pivots) {
         StringBuilder sb = new StringBuilder();
         sb.append("Graph bridges\n");
         for (int[] bridgeEdge : bridges) {
