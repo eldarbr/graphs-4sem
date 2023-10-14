@@ -35,15 +35,15 @@ public class GraphSearch {
     public static boolean[] DFSConnectedness(final Graph graph, final int startV, boolean[] prevMarked) {
 
         LinkedList<Integer> verticesQueue = new LinkedList<>();
-
-        boolean[] markedVertices = new boolean[graph.getVerticesCount()];
         verticesQueue.add(startV);
 
-        int currentVertex;
+        boolean[] markedVertices = new boolean[graph.getVerticesCount()];
 
+        int currentVertex;
         while (!verticesQueue.isEmpty()) {
 
             currentVertex = verticesQueue.pop();
+
             if (markedVertices[currentVertex] || prevMarked[currentVertex]) {
                 continue;
             }

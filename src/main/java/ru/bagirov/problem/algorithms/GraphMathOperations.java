@@ -119,39 +119,41 @@ public class GraphMathOperations {
 
     public static List<List<Integer>> calculateStrongConnections(final Graph sourceGraph) {
         int verticesCount = sourceGraph.getVerticesCount();
+
         List<List<Integer>> components = new ArrayList<>();
+
+        int[][] sourceMatrix = sourceGraph.getGraphAdjacencyMatrix();
+        int[][] transposedMatrix = new int[verticesCount][verticesCount];
+
+        for (int i = 0; i < verticesCount; i++) {
+            for (int j = 0; j < verticesCount; j++) {
+                transposedMatrix[j][i] = sourceMatrix[i][j];
+            }
+        }
+        Graph transposedGraph = new Graph(transposedMatrix);
+
+        List<Integer> order = sortTopologically(transposedGraph);
         boolean[] visitedVertices = new boolean[verticesCount];
 
-        int[][] adjMatrixCopyTransposed = new int[verticesCount][verticesCount];
-
-        for (int i = 0; i < verticesCount; i++) {
-            for (int j = 0; j < verticesCount; j++) {
-                adjMatrixCopyTransposed[i][j] = sourceGraph.getGraphAdjacencyMatrix()[j][i];
-            }
-        }
-        Graph transposedSorted = new Graph(adjMatrixCopyTransposed);
-
-
-        GraphMathOperations.sortTopologically(transposedSorted);
-
-        for (int i = 0; i < verticesCount; i++) {
-            boolean[] newVisitedVertices = GraphSearch.DFSConnectedness(transposedSorted, i, visitedVertices);
-            if (!visitedVertices[i]) {
-                List<Integer> currentComponents = new ArrayList<>();
-                for (int j = 0; j < verticesCount; j++) {
-                    if (newVisitedVertices[j]) {
-                        currentComponents.add(j);
+        for (int vertex : order) {
+            if (!visitedVertices[vertex]) {
+                boolean[] newVisitedVertices = GraphSearch.DFSConnectedness(sourceGraph, vertex, visitedVertices);
+                if (!visitedVertices[vertex]) {
+                    List<Integer> newComponent = new ArrayList<>();
+                    for (int i = 0; i < verticesCount; i++) {
+                        if (newVisitedVertices[i]) {
+                            newComponent.add(i);
+                        }
+                    }
+                    components.add(newComponent);
+                }
+                for (int i = 0; i < verticesCount; i++) {
+                    if (newVisitedVertices[i]) {
+                        visitedVertices[i] = true;
                     }
                 }
-                components.add(currentComponents);
-            }
-            for (int j = 0; j < verticesCount; j++) {
-                if (newVisitedVertices[j]) {
-                    visitedVertices[j] = true;
-                }
             }
         }
-
         return components;
     }
 
