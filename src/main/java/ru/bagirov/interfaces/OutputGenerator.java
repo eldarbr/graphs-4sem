@@ -1,4 +1,6 @@
-package interfaces;
+package ru.bagirov.interfaces;
+
+import ru.bagirov.problem.algorithms.Constants;
 
 import java.util.List;
 
@@ -19,10 +21,10 @@ public class OutputGenerator {
 
         ////////////
         // Vertices Degree
-        sb.append("Vertices degree:\n\t");
+        sb.append("Vertices degree:\n");
         for (int i = 0; i < verticesDegree.length; i++) {
             sb.append("\t");
-            sb.append(i);
+            sb.append(i+1);
         }
         if (isDirected) {
             sb.append("\ninD:");
@@ -58,7 +60,12 @@ public class OutputGenerator {
                 if (j > 0) {
                     sb.append("\t");
                 }
-                sb.append(shortestDistMatrix[i][j]);
+                int dat = shortestDistMatrix[i][j];
+                if (dat == Constants.INF) {
+                    sb.append("inf");
+                } else {
+                    sb.append(dat);
+                }
             }
         }
 
@@ -97,7 +104,7 @@ public class OutputGenerator {
         if (!isDirected && centralVertices!=null) {
             sb.append("Central vertices:\n");
             for (int vertex : centralVertices) {
-                sb.append(vertex);
+                sb.append(vertex+1);
                 sb.append("\t");
             }
             sb.append("\n\n");
@@ -114,7 +121,7 @@ public class OutputGenerator {
 
             sb.append("Peripheral vertices:\n");
             for (int vertex : peripheralVertices) {
-                sb.append(vertex);
+                sb.append(vertex+1);
                 sb.append("\t");
             }
             sb.append("\n\n");
@@ -158,7 +165,7 @@ public class OutputGenerator {
 
         for (List<Integer> component : weakConnectionComponents) {
             for (int vertex : component) {
-                sb.append(vertex);
+                sb.append(vertex+1);
                 sb.append("\t");
             }
             sb.append("\n");
@@ -181,7 +188,7 @@ public class OutputGenerator {
             }
             for (List<Integer> component : strongConnectionComponents) {
                 for (int vertex : component) {
-                    sb.append(vertex);
+                    sb.append(vertex+1);
                     sb.append("\t");
                 }
                 sb.append("\n");
@@ -196,15 +203,15 @@ public class OutputGenerator {
         StringBuilder sb = new StringBuilder();
         sb.append("Graph bridges\n");
         for (int[] bridgeEdge : bridges) {
-            sb.append(bridgeEdge[0]);
+            sb.append(bridgeEdge[0]+1);
             sb.append("\t");
-            sb.append(bridgeEdge[1]);
+            sb.append(bridgeEdge[1]+1);
             sb.append("\n");
         }
         sb.append("\n\n");
         sb.append("Graph pivots\n");
         for (int pivotVertex : pivots) {
-            sb.append(pivotVertex);
+            sb.append(pivotVertex+1);
             sb.append("\n");
         }
         return sb.toString();
@@ -233,14 +240,38 @@ public class OutputGenerator {
 
         sb.append("\n\nMST edges:\n");
         for (List<Integer> edge : MSTEdges) {
-            sb.append(edge.get(0));
+            sb.append(edge.get(0)+1);
             sb.append("\t");
-            sb.append(edge.get(1));
+            sb.append(edge.get(1)+1);
             sb.append("\t");
             sb.append(edge.get(2));
             sb.append("\n");
         }
 
+
+        return sb.toString();
+    }
+
+    public static String FifthTaskOutputGenerator(int pathLength, List<List<Integer>> pathEdges) {
+        StringBuilder sb = new StringBuilder();
+
+        if (pathLength == Constants.INF) {
+            sb.append("Path can't be found");
+            return sb.toString();
+        }
+
+        sb.append("Path length: ");
+        sb.append(pathLength);
+
+        sb.append("\n\nPath edges:\n");
+        for (List<Integer> edge: pathEdges) {
+            sb.append(edge.get(0)+1);
+            sb.append("\t");
+            sb.append(edge.get(1)+1);
+            sb.append("\t");
+            sb.append(edge.get(2));
+            sb.append("\n");
+        }
 
         return sb.toString();
     }

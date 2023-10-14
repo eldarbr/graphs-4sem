@@ -1,9 +1,8 @@
-package problem.algorithms;
+package ru.bagirov.problem.algorithms;
 
-import problem.shared.Graph;
+import ru.bagirov.problem.shared.Graph;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

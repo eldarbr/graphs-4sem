@@ -1,4 +1,4 @@
-package problem.shared;
+package ru.bagirov.problem.shared;
 
 import java.io.File;
 import java.io.FileNotFoundException;

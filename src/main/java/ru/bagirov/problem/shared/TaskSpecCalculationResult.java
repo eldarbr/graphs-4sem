@@ -1,4 +1,4 @@
-package problem.shared;
+package ru.bagirov.problem.shared;
 
 public class TaskSpecCalculationResult<T> {
     T spec;

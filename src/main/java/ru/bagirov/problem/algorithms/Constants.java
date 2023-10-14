@@ -1,4 +1,4 @@
-package problem.algorithms;
+package ru.bagirov.problem.algorithms;
 
 
 public class Constants {

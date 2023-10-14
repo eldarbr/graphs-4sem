@@ -1,8 +1,8 @@
-package problem.third;
+package ru.bagirov.problem.third;
 
-import problem.algorithms.GraphMathOperations;
-import problem.shared.Graph;
-import problem.shared.TaskSpecCalculationResult;
+import ru.bagirov.problem.algorithms.GraphMathOperations;
+import ru.bagirov.problem.shared.Graph;
+import ru.bagirov.problem.shared.TaskSpecCalculationResult;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
-package problem.first;
+package ru.bagirov.problem.first;
 
-import problem.shared.Graph;
-import problem.algorithms.GraphMathOperations;
-import problem.shared.TaskSpecCalculationResult;
-import problem.algorithms.CommonAlgorithms;
+import ru.bagirov.problem.shared.Graph;
+import ru.bagirov.problem.algorithms.GraphMathOperations;
+import ru.bagirov.problem.shared.TaskSpecCalculationResult;
+import ru.bagirov.problem.algorithms.CommonAlgorithms;
 
 
 import java.util.List;

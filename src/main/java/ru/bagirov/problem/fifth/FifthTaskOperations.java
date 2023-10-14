@@ -1,8 +1,8 @@
-package problem.fifth;
+package ru.bagirov.problem.fifth;
 
-import problem.algorithms.CommonAlgorithms;
-import problem.shared.Graph;
-import problem.shared.TaskSpecCalculationResult;
+import ru.bagirov.problem.algorithms.CommonAlgorithms;
+import ru.bagirov.problem.shared.Graph;
+import ru.bagirov.problem.shared.TaskSpecCalculationResult;
 
 import java.util.List;
 
@@ -24,11 +24,13 @@ public class FifthTaskOperations {
 
     private void calculateSpecs() {
         Object[] data = CommonAlgorithms.DijkstraShortestPath(sourceGraph, sourceVertex, destinationVertex);
-        this.pathLength.setSpec((Integer)data[0]);
-        this.pathEdges.setSpec((List<List<Integer>>)data[1]);
+        if (data != null) {
+            this.pathLength.setSpec((Integer)data[0]);
+            this.pathEdges.setSpec((List<List<Integer>>)data[1]);
+        }
     }
 
-    public int getPathLength() {
+    public Integer getPathLength() {
         return this.pathLength.getSpec();
     }
 

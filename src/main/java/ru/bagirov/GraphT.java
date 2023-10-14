@@ -1,16 +1,19 @@
+package ru.bagirov;
 
-import interfaces.ConsoleInterface;
-import interfaces.OutputGenerator;
-import problem.shared.Graph;
-import problem.shared.GraphSourceType;
+import ru.bagirov.interfaces.ConsoleInterface;
+import ru.bagirov.interfaces.FileWriter;
+import ru.bagirov.interfaces.OutputGenerator;
+import ru.bagirov.problem.shared.Graph;
+import ru.bagirov.problem.shared.GraphSourceType;
 
-import problem.first.FirstTaskOperations;
-import problem.second.SecondTaskOperations;
-import problem.third.ThirdTaskOperations;
-import problem.fourth.FourthTaskOperations;
-import problem.fifth.FifthTaskOperations;
+import ru.bagirov.problem.first.FirstTaskOperations;
+import ru.bagirov.problem.second.SecondTaskOperations;
+import ru.bagirov.problem.third.ThirdTaskOperations;
+import ru.bagirov.problem.fourth.FourthTaskOperations;
+import ru.bagirov.problem.fifth.FifthTaskOperations;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class GraphT {
     public static void main(String[] args) {
@@ -67,10 +70,28 @@ public class GraphT {
                     fourthTaskOperations.getMSTWeight(), fourthTaskOperations.getExecutionTime());
 
         } else if (taskID == 5) {
-            FifthTaskOperations fifthTaskOperations = new FifthTaskOperations(myGraph, ((int[])data[5])[0], ((int[])data[5])[1]);
-
+            FifthTaskOperations fifthTaskOperations;
+            try {
+                fifthTaskOperations = new FifthTaskOperations(myGraph, ((int[])data[5])[0], ((int[])data[5])[1]);
+            } catch (IllegalArgumentException expected) {
+                System.out.println("No path between the points");
+                System.exit(0);
+                return;
+            }
+            output = OutputGenerator.FifthTaskOutputGenerator(fifthTaskOperations.getPathLength(),
+                    fifthTaskOperations.getPathEdges());
         }
 
-        System.out.print(output);
+        if (data[6] != null) {
+            String ofp = (String)data[6];
+            try {
+                FileWriter.WriteToFile(ofp, output);
+            } catch (IOException expected) {
+                System.out.println("\n[ERR] Could not write to the file\n\n");
+                System.out.println(output);
+            }
+        } else {
+            System.out.println(output);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package interfaces;
+package ru.bagirov.interfaces;
 
 public class ConsoleInterface {
 
@@ -77,23 +77,46 @@ public class ConsoleInterface {
 
         int[] fifthSrcDst = new int[] {-1, -1};
 
+        String outputFilePath = null;
+        boolean ofpExpected = false;
+
 
         for (int i = 0; i < inpArgs.length; i++) {
+            if (inpArgs[i].equals("-o") && i < inpArgs.length-1) {
+                ofpExpected = true;
+                if (outputFilePath != null) {
+                    throw new IllegalArgumentException("output filepath was specified twice");
+                }
+                outputFilePath = inpArgs[i+1];
+            }
+
             if (inpArgs[i].equals("-t") && i < inpArgs.length-1) {
+                if (taskId != -1) {
+                    throw new IllegalArgumentException("task id was already specified");
+                }
                 taskId = Integer.parseInt(inpArgs[i+1]);
             }
             if (inpArgs[i].equals("-h")) {
                 helpRequested = true;
             }
             if (inpArgs[i].equals("-e") && i < inpArgs.length-1) {
+                if (inputType!=-1) {
+                    throw new IllegalArgumentException("filepath and type were already specified");
+                }
                 inputType = 0;
                 filepath = inpArgs[i+1];
             }
             if (inpArgs[i].equals("-m") && i < inpArgs.length-1) {
+                if (inputType!=-1) {
+                    throw new IllegalArgumentException("filepath and type were already specified");
+                }
                 inputType = 1;
                 filepath = inpArgs[i+1];
             }
             if (inpArgs[i].equals("-l") && i < inpArgs.length-1) {
+                if (inputType!=-1) {
+                    throw new IllegalArgumentException("filepath and type were already specified");
+                }
                 inputType = 2;
                 filepath = inpArgs[i+1];
             }
@@ -127,14 +150,14 @@ public class ConsoleInterface {
             }
             if (inpArgs[i].equals("-n") && i < inpArgs.length-1) {
                 try {
-                    fifthSrcDst[0] = Integer.parseInt(inpArgs[i+1]);
+                    fifthSrcDst[0] = Integer.parseInt(inpArgs[i+1])-1;
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException("wrong number format for the key -n");
                 }
             }
             if (inpArgs[i].equals("-d") && i < inpArgs.length-1) {
                 try {
-                    fifthSrcDst[1] = Integer.parseInt(inpArgs[i+1]);
+                    fifthSrcDst[1] = Integer.parseInt(inpArgs[i+1])-1;
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException("wrong number format for the key -d");
                 }
@@ -143,8 +166,11 @@ public class ConsoleInterface {
         if (taskId < 1 || taskId > 5) {
             throw new IllegalArgumentException("wrong task id");
         }
+        if (helpRequested) {
+            return new Object[]{ taskId, helpRequested, inputType, filepath, fourthAlgo, fifthSrcDst};
+        }
         if (inputType == -1) {
-            throw new IllegalArgumentException("wrong input provided");
+            throw new IllegalArgumentException("wrong input type/fp provided");
         }
         if (taskId!=4 && fourthTaskChosen) {
             throw new IllegalArgumentException("keys: -k, -p, -b, -s - only allowed for the 4th task");
@@ -161,7 +187,7 @@ public class ConsoleInterface {
             throw new IllegalArgumentException("keys: -n, -d - only allowed for the 5th task");
         }
 
-        return new Object[]{ taskId, helpRequested, inputType, filepath, fourthAlgo, fifthSrcDst};
+        return new Object[]{ taskId, helpRequested, inputType, filepath, fourthAlgo, fifthSrcDst, outputFilePath};
     }
 
 }

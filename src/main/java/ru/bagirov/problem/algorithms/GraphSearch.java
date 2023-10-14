@@ -1,6 +1,6 @@
-package problem.algorithms;
+package ru.bagirov.problem.algorithms;
 
-import problem.shared.Graph;
+import ru.bagirov.problem.shared.Graph;
 
 import java.util.List;
 import java.util.LinkedList;

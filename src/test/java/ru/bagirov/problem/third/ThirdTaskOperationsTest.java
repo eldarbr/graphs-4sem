@@ -1,12 +1,12 @@
-package problem.third;
+package ru.bagirov.problem.third;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.junit.Ignore;
+
 import org.junit.Test;
-import problem.shared.Graph;
+import ru.bagirov.problem.shared.Graph;
 
 import java.util.Arrays;
 

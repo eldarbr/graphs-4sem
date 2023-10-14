@@ -1,7 +1,7 @@
-package problem.algorithms;
+package ru.bagirov.problem.algorithms;
 
-import problem.shared.DisjointSet;
-import problem.shared.Graph;
+import ru.bagirov.problem.shared.DisjointSet;
+import ru.bagirov.problem.shared.Graph;
 
 import java.util.*;
 
@@ -164,6 +164,7 @@ public class CommonAlgorithms {
         int[] pathArray = new int[verticesCount];
         Arrays.fill(pathArray, -1);
 
+        distanceArray[srcV] = 0;
         verticesQueue.add(new int[] {0, srcV});
 
         while (!verticesQueue.isEmpty()) {
@@ -179,12 +180,16 @@ public class CommonAlgorithms {
             }
         }
 
+        if (distanceArray[destV] == Constants.INF) {
+            throw new IllegalArgumentException("no path between the vertices");
+        }
+
         List<List<Integer>> pathEdges = new ArrayList<>();
         for (int curEdge = destV; curEdge != srcV;) {
             List<Integer> edge = new ArrayList<>();
             edge.add(pathArray[curEdge]);
             edge.add(curEdge);
-            edge.add(sourceGraph.weight(edge.get(0), edge.get(1)));
+            edge.add(sourceGraph.weight(pathArray[curEdge], curEdge));
             pathEdges.add(0, edge);
 
             curEdge = pathArray[curEdge];

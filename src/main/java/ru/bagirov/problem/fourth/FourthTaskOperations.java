@@ -1,8 +1,8 @@
-package problem.fourth;
+package ru.bagirov.problem.fourth;
 
-import problem.algorithms.CommonAlgorithms;
-import problem.shared.Graph;
-import problem.shared.TaskSpecCalculationResult;
+import ru.bagirov.problem.algorithms.CommonAlgorithms;
+import ru.bagirov.problem.shared.Graph;
+import ru.bagirov.problem.shared.TaskSpecCalculationResult;
 
 import java.util.ArrayList;
 import java.util.List;

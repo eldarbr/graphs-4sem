@@ -1,8 +1,8 @@
-package problem.second;
+package ru.bagirov.problem.second;
 
-import problem.shared.Graph;
-import problem.algorithms.GraphMathOperations;
-import problem.shared.TaskSpecCalculationResult;
+import ru.bagirov.problem.shared.Graph;
+import ru.bagirov.problem.algorithms.GraphMathOperations;
+import ru.bagirov.problem.shared.TaskSpecCalculationResult;
 
 import java.util.List;
 
@@ -37,16 +37,10 @@ public class SecondTaskOperations {
     }
 
     public List<List<Integer>> getStrongConnectionComponents() {
-        if (!sourceGraph.isADirectedGraph()) {
-            throw new UnsupportedOperationException("The graph is not a directed graph");
-        }
         return strongConnectionComponents.getSpec();
     }
 
     public int getStrongConnectionComponentsCount() {
-        if (!sourceGraph.isADirectedGraph()) {
-            throw new UnsupportedOperationException("The graph is not a directed graph");
-        }
         return strongConnectionComponents.getSpec().size();
     }
 
