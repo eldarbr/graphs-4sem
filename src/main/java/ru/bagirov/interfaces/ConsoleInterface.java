@@ -78,12 +78,9 @@ public class ConsoleInterface {
         int[] fifthSrcDst = new int[] {-1, -1};
 
         String outputFilePath = null;
-        boolean ofpExpected = false;
-
 
         for (int i = 0; i < inpArgs.length; i++) {
             if (inpArgs[i].equals("-o") && i < inpArgs.length-1) {
-                ofpExpected = true;
                 if (outputFilePath != null) {
                     throw new IllegalArgumentException("output filepath was specified twice");
                 }

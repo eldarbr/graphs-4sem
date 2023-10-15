@@ -1,6 +1,7 @@
 package ru.bagirov.interfaces;
 
 import ru.bagirov.problem.algorithms.Constants;
+import ru.bagirov.problem.shared.Edge;
 
 import java.util.List;
 import java.util.Set;
@@ -218,7 +219,7 @@ public class OutputGenerator {
         return sb.toString();
     }
 
-    public static String FourthTaskOutputGenerator(List<List<Integer>> MSTEdges,
+    public static String FourthTaskOutputGenerator(List<Edge> MSTEdges,
                                                    int MSTWeight, List<Long> calculationTime) {
         StringBuilder sb = new StringBuilder();
 
@@ -240,12 +241,12 @@ public class OutputGenerator {
 
 
         sb.append("\n\nMST edges:\n");
-        for (List<Integer> edge : MSTEdges) {
-            sb.append(edge.get(0)+1);
+        for (Edge edge : MSTEdges) {
+            sb.append(edge.from+1);
             sb.append("\t");
-            sb.append(edge.get(1)+1);
+            sb.append(edge.to+1);
             sb.append("\t");
-            sb.append(edge.get(2));
+            sb.append(edge.weight);
             sb.append("\n");
         }
 

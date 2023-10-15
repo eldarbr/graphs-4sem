@@ -7,6 +7,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+import ru.bagirov.problem.shared.Edge;
 import ru.bagirov.problem.shared.Graph;
 
 import java.util.List;
@@ -23,10 +24,10 @@ public class CommonAlgorithmsTest {
                 {1,4,6,7,0}
         });
 
-        for (List<Integer> edge : CommonAlgorithms.kruskalsMST(src)) {
-            System.out.print(edge.get(0));
-            System.out.print(edge.get(1));
-            System.out.println(edge.get(2));
+        for (Edge edge : CommonAlgorithms.kruskalsMST(src)) {
+            System.out.print(edge.from);
+            System.out.print(edge.to);
+            System.out.println(edge.weight);
         }
         System.out.println();
     }
@@ -41,10 +42,10 @@ public class CommonAlgorithmsTest {
                 {1,4,6,7,0}
         });
 
-        for (List<Integer> edge : CommonAlgorithms.primaMST(src)) {
-            System.out.print(edge.get(0));
-            System.out.print(edge.get(1));
-            System.out.println(edge.get(2));
+        for (Edge edge : CommonAlgorithms.primaMST(src)) {
+            System.out.print(edge.from);
+            System.out.print(edge.to);
+            System.out.println(edge.weight);
         }
         System.out.println();
     }
@@ -59,10 +60,10 @@ public class CommonAlgorithmsTest {
                 {1,4,6,7,0}
         });
 
-        for (List<Integer> edge : CommonAlgorithms.boruvkasMST(src)) {
-            System.out.print(edge.get(0));
-            System.out.print(edge.get(1));
-            System.out.println(edge.get(2));
+        for (Edge edge : CommonAlgorithms.boruvkasMST(src)) {
+            System.out.print(edge.from);
+            System.out.print(edge.to);
+            System.out.println(edge.weight);
         }
         System.out.println();
     }

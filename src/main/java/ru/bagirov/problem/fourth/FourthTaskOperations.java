@@ -1,6 +1,7 @@
 package ru.bagirov.problem.fourth;
 
 import ru.bagirov.problem.algorithms.CommonAlgorithms;
+import ru.bagirov.problem.shared.Edge;
 import ru.bagirov.problem.shared.Graph;
 import ru.bagirov.problem.shared.TaskSpecCalculationResult;
 
@@ -10,11 +11,11 @@ import java.util.List;
 public class FourthTaskOperations {
     private Graph sourceGraph;
 
-    private TaskSpecCalculationResult<List<List<Integer>>> MSTEdgesList = new TaskSpecCalculationResult<>();
+    private TaskSpecCalculationResult<List<Edge>> MSTEdgesList = new TaskSpecCalculationResult<>();
     private TaskSpecCalculationResult<Integer> MSTweight = new TaskSpecCalculationResult<>();
     private TaskSpecCalculationResult<List<Long>> calculationTime = new TaskSpecCalculationResult<>();
 
-    public FourthTaskOperations(final Graph sourceGraph, final int algorithm){
+    public FourthTaskOperations(final Graph sourceGraph, final FourthTaskAlgorithm algorithm){
         this.sourceGraph = Graph.deepCopy(sourceGraph);
 
         if (this.sourceGraph.isADirectedGraph()) {
@@ -24,14 +25,14 @@ public class FourthTaskOperations {
         calculateSpecs(algorithm);
     }
 
-    private void calculateSpecs(final int algorithm) {
-        if (algorithm == 0) {
+    private void calculateSpecs(final FourthTaskAlgorithm algorithm) {
+        if (algorithm == FourthTaskAlgorithm.KRUSKALA) {
             MSTEdgesList.setSpec(CommonAlgorithms.kruskalsMST(sourceGraph));
-        } else if (algorithm == 1) {
+        } else if (algorithm == FourthTaskAlgorithm.PRIMA) {
             MSTEdgesList.setSpec(CommonAlgorithms.primaMST(sourceGraph));
-        } else if (algorithm == 2) {
+        } else if (algorithm == FourthTaskAlgorithm.BORUVKA) {
             MSTEdgesList.setSpec(CommonAlgorithms.boruvkasMST(sourceGraph));
-        } else if (algorithm == 3) {
+        } else if (algorithm == FourthTaskAlgorithm.COMPARING) {
             compareExecutionTime();
         } else {
             throw new IllegalArgumentException("Wrong algorithm index");
@@ -44,13 +45,13 @@ public class FourthTaskOperations {
             throw new IllegalStateException("wrong order: calculate mst first");
         }
         int weight = 0;
-        for (List<Integer> edge: MSTEdgesList.getSpec()) {
-            weight += edge.get(2);
+        for (Edge edge: MSTEdgesList.getSpec()) {
+            weight += edge.weight;
         }
         return weight;
     }
 
-    public List<List<Integer>> getMST() {
+    public List<Edge> getMST() {
         return MSTEdgesList.getSpec();
     }
 
@@ -60,7 +61,7 @@ public class FourthTaskOperations {
 
     private void compareExecutionTime() {
         calculationTime.setSpec(new ArrayList<>());
-        List<List<Integer>> result = new ArrayList<>();
+        List<Edge> result = new ArrayList<>();
 
         long startNanos = System.nanoTime();
         result= CommonAlgorithms.kruskalsMST(sourceGraph);

@@ -23,7 +23,7 @@ public class FifthTaskOperations {
     }
 
     private void calculateSpecs() {
-        Object[] data = CommonAlgorithms.DijkstraShortestPath(sourceGraph, sourceVertex, destinationVertex);
+        Object[] data = CommonAlgorithms.dijkstraShortestPath(sourceGraph, sourceVertex, destinationVertex);
         if (data != null) {
             this.pathLength.setSpec((Integer)data[0]);
             this.pathEdges.setSpec((List<List<Integer>>)data[1]);

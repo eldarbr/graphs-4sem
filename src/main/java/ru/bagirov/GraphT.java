@@ -3,6 +3,7 @@ package ru.bagirov;
 import ru.bagirov.interfaces.ConsoleInterface;
 import ru.bagirov.interfaces.FileWriter;
 import ru.bagirov.interfaces.OutputGenerator;
+import ru.bagirov.problem.fourth.FourthTaskAlgorithm;
 import ru.bagirov.problem.shared.Graph;
 import ru.bagirov.problem.shared.GraphSourceType;
 
@@ -65,7 +66,8 @@ public class GraphT {
                     thirdTaskOperations.getPivots());
 
         } else if (taskID == 4) {
-            FourthTaskOperations fourthTaskOperations = new FourthTaskOperations(myGraph, (Integer)data[4]);
+            FourthTaskOperations fourthTaskOperations = new FourthTaskOperations(myGraph,
+                                                                FourthTaskAlgorithm.values()[(Integer)data[4]]);
             output = OutputGenerator.FourthTaskOutputGenerator(fourthTaskOperations.getMST(),
                     fourthTaskOperations.getMSTWeight(), fourthTaskOperations.getExecutionTime());
 

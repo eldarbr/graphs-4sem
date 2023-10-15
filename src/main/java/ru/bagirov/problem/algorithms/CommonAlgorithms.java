@@ -1,6 +1,7 @@
 package ru.bagirov.problem.algorithms;
 
 import ru.bagirov.problem.shared.DisjointSet;
+import ru.bagirov.problem.shared.Edge;
 import ru.bagirov.problem.shared.Graph;
 
 import java.util.*;
@@ -44,25 +45,25 @@ public class CommonAlgorithms {
     }
 
 
-    public static List<List<Integer>> kruskalsMST(final Graph sourceGraph) {
+    public static List<Edge> kruskalsMST(final Graph sourceGraph) {
         if (sourceGraph.isADirectedGraph()) {
             throw new IllegalArgumentException("no directed graphs are allowed");
         }
 
         // sort by edge weight
-        List<List<Integer>> sortedEdgeList = sourceGraph.getGraphEdgesList();
-        sortedEdgeList.sort(Comparator.comparingInt(list -> (Integer) list.get(2)));
+        List<Edge> sortedEdgeList = sourceGraph.getGraphEdgesList();
+        sortedEdgeList.sort(Comparator.comparingInt(list -> (Integer) list.weight));
 
-        List<List<Integer>> MST = new ArrayList<>();
+        List<Edge> MST = new ArrayList<>();
 
         // disjoint-set
         DisjointSet dsu = new DisjointSet(sourceGraph.getVerticesCount());
 
         // for each edge of the graph in the sorted order
-        for (List<Integer> edge : sortedEdgeList) {
+        for (Edge edge : sortedEdgeList) {
             // if not a cycle
-            if (dsu.findSet(edge.get(0)) != dsu.findSet(edge.get(1))) {
-                dsu.unionSet(edge.get(0), edge.get(1));
+            if (dsu.findSet(edge.from) != dsu.findSet(edge.to)) {
+                dsu.unionSet(edge.from, edge.to);
                 // add the edge to the tree
                 MST.add(edge);
             }
@@ -70,38 +71,38 @@ public class CommonAlgorithms {
         return MST;
     }
 
-    public static List<List<Integer>> primaMST(final Graph sourceGraph) {
+    public static List<Edge> primaMST(final Graph sourceGraph) {
         if (sourceGraph.isADirectedGraph()) {
             throw new IllegalArgumentException("no directed graphs are allowed");
         }
 
         // MST container
-        List<List<Integer>> MST = new ArrayList<>();
+        List<Edge> MST = new ArrayList<>();
 
         int verticesCount = sourceGraph.getVerticesCount();
         boolean[] addedVertices = new boolean[verticesCount];
         addedVertices[0] = true;
         int addedVerticesCount = 1;
 
-        List<List<Integer>> edgeBuffer = new ArrayList<>(sourceGraph.getVertexEdgesList(0));
-        edgeBuffer.sort(Comparator.comparingInt(list -> (Integer)list.get(2)));
+        List<Edge> edgeBuffer = new ArrayList<>(sourceGraph.getVertexEdgesList(0));
+        edgeBuffer.sort(Comparator.comparingInt(list -> list.weight));
 
         while (addedVerticesCount < verticesCount) {
-            for (List<Integer> edge : edgeBuffer) {
-                if (addedVertices[edge.get(0)] && addedVertices[edge.get(1)]) {
+            for (Edge edge : edgeBuffer) {
+                if (addedVertices[edge.from] && addedVertices[edge.to]) {
                     continue;
                 }
                 MST.add(edge);
-                if (addedVertices[edge.get(0)]) {
-                    edgeBuffer.addAll(sourceGraph.getVertexEdgesList(edge.get(1)));
-                    addedVertices[edge.get(1)] = true;
+                if (addedVertices[edge.from]) {
+                    edgeBuffer.addAll(sourceGraph.getVertexEdgesList(edge.to));
+                    addedVertices[edge.to] = true;
                 } else {
-                    edgeBuffer.addAll(sourceGraph.getVertexEdgesList(edge.get(0)));
-                    addedVertices[edge.get(0)] = true;
+                    edgeBuffer.addAll(sourceGraph.getVertexEdgesList(edge.from));
+                    addedVertices[edge.from] = true;
                 }
                 addedVerticesCount++;
                 edgeBuffer.remove(edge);
-                edgeBuffer.sort(Comparator.comparingInt(list -> list.get(2)));
+                edgeBuffer.sort(Comparator.comparingInt(list -> list.weight));
                 break;
             }
         }
@@ -109,53 +110,53 @@ public class CommonAlgorithms {
         return MST;
     }
 
-    public static List<List<Integer>> boruvkasMST(final Graph sourceGraph) {
+    public static List<Edge> boruvkasMST(final Graph sourceGraph) {
         if (sourceGraph.isADirectedGraph()) {
             throw new IllegalArgumentException("no directed graphs are allowed");
         }
 
         final int verticesCount = sourceGraph.getVerticesCount();
-        List[] cheapest = new List[verticesCount];
+        Edge[] cheapest = new Edge[verticesCount];
         DisjointSet disjointSet = new DisjointSet(verticesCount);
         int treesCount = verticesCount;
 
-        List<List<Integer>> MST = new ArrayList<>();
+        List<Edge> MST = new ArrayList<>();
 
         while (treesCount > 1) {
-            for (List<Integer> edge : sourceGraph.getGraphEdgesList()) {
-                int x = disjointSet.findSet(edge.get(0));
-                int y = disjointSet.findSet(edge.get(1));
+            for (Edge edge : sourceGraph.getGraphEdgesList()) {
+                int x = disjointSet.findSet(edge.from);
+                int y = disjointSet.findSet(edge.to);
 
                 if (x!=y) {
                     for (int val : List.of(x,y)) {
                         if (cheapest[val] == null) {
                             cheapest[val] = edge;
-                        } else if ((Integer)cheapest[val].get(2) > edge.get(2)) {
+                        } else if (cheapest[val].weight > edge.weight) {
                             cheapest[val] = edge;
                         }
                     }
                 }
             }
 
-            for (List<Integer> edge : cheapest) {
+            for (Edge edge : cheapest) {
                 if (edge == null) {
                     continue;
                 }
-                int x = disjointSet.findSet(edge.get(0));
-                int y = disjointSet.findSet(edge.get(1));
+                int x = disjointSet.findSet(edge.from);
+                int y = disjointSet.findSet(edge.to);
                 if (x != y) {
                     disjointSet.unionSet(x,y);
                     MST.add(edge);
                     treesCount--;
                 }
             }
-            cheapest = new List[verticesCount];
+            cheapest = new Edge[verticesCount];
         }
 
         return MST;
     }
 
-    public static Object[] DijkstraShortestPath(final Graph sourceGraph, int srcV, int destV) {
+    public static Object[] dijkstraShortestPath(final Graph sourceGraph, int srcV, int destV) {
 
         int verticesCount = sourceGraph.getVerticesCount();
         LinkedList<int[]> verticesQueue = new LinkedList<>();
@@ -169,13 +170,13 @@ public class CommonAlgorithms {
 
         while (!verticesQueue.isEmpty()) {
             int currentVert = verticesQueue.poll()[1];
-            List<List<Integer>> currIncEdges = sourceGraph.getVertexEdgesList(currentVert);
+            List<Edge> currIncEdges = sourceGraph.getVertexEdgesList(currentVert);
 
-            for (List<Integer> edge : currIncEdges) {
-                if ((distanceArray[currentVert] + edge.get(2)) < distanceArray[edge.get(1)]) {
-                    distanceArray[edge.get(1)] = distanceArray[currentVert] + edge.get(2);
-                    pathArray[edge.get(1)] = currentVert;
-                    verticesQueue.add(new int[] { distanceArray[edge.get(1)], edge.get(1) });
+            for (Edge edge : currIncEdges) {
+                if ((distanceArray[currentVert] + edge.weight) < distanceArray[edge.to]) {
+                    distanceArray[edge.to] = distanceArray[currentVert] + edge.weight;
+                    pathArray[edge.to] = currentVert;
+                    verticesQueue.add(new int[] { distanceArray[edge.to], edge.to });
                 }
             }
         }
@@ -196,6 +197,66 @@ public class CommonAlgorithms {
         }
 
 
-        return new Object[]{distanceArray[destV], pathEdges};
+        return new Object[]{distanceArray[destV], pathEdges, distanceArray};
+    }
+
+
+    // calculate shortest distances
+    // returns null if there are negative cycles in the graph
+    public static int[] bellmanFordShortestDistances(final Graph sourceGraph, final int srcV) {
+        final int verticesCount = sourceGraph.getVerticesCount();
+
+        int[] shortestDistances = new int[verticesCount];
+        Arrays.fill(shortestDistances, Constants.INF);
+        shortestDistances[srcV] = 0;
+
+        for (int i = 0; i < verticesCount-1; i++) {
+            for (final Edge edge : sourceGraph.getGraphEdgesList()) {
+                if (shortestDistances[edge.from] != Constants.INF && shortestDistances[edge.to] == Constants.INF ||
+                        shortestDistances[edge.from] + edge.weight < shortestDistances[edge.to]) {
+                    shortestDistances[edge.to] = shortestDistances[edge.from] + edge.weight;
+                }
+            }
+        }
+
+        for (final Edge edge : sourceGraph.getGraphEdgesList()) {
+            if (shortestDistances[edge.from] != Constants.INF &&
+                    shortestDistances[edge.from]+edge.weight < shortestDistances[edge.to]) {
+                return null;
+            }
+        }
+
+        return shortestDistances;
+    }
+
+    public static int[] levitShortestDistances(final Graph sourceGraph, final int srcV) {
+        final int verticesCount = sourceGraph.getVerticesCount();
+        int[] shortestDistances = new int[verticesCount];
+        Arrays.fill(shortestDistances, Constants.INF);
+        shortestDistances[srcV] = 0;
+        int[] state = new int[verticesCount];
+        Arrays.fill(state, 2);
+        state[srcV]=1;
+
+        LinkedList<Integer> deque = new LinkedList<>();
+        deque.add(srcV);
+
+        while (!deque.isEmpty()) {
+            int vertex = deque.poll();
+            state[vertex] = 0;
+            for (Edge edge : sourceGraph.getVertexEdgesList(vertex)) {
+                if (shortestDistances[edge.to] == Constants.INF
+                        || shortestDistances[edge.to] > shortestDistances[vertex]+edge.weight) {
+                    shortestDistances[edge.to] = shortestDistances[vertex]+edge.weight;
+                    if (state[edge.to] == 2) {
+                        deque.add(edge.to);
+                    } else if (state[edge.to] == 0) {
+                        deque.addFirst(edge.to);
+                    }
+                    state[edge.to] = 1;
+                }
+            }
+        }
+        return shortestDistances;
     }
 }
