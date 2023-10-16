@@ -159,6 +159,11 @@ public class CommonAlgorithms {
     public static Object[] dijkstraShortestPath(final Graph sourceGraph, int srcV, int destV) {
 
         int verticesCount = sourceGraph.getVerticesCount();
+
+        if (srcV >= verticesCount || destV >= verticesCount) {
+            throw new IllegalArgumentException("false vertex index");
+        }
+
         LinkedList<int[]> verticesQueue = new LinkedList<>();
         int[] distanceArray = new int[verticesCount];
         Arrays.fill(distanceArray, Constants.INF);
@@ -182,17 +187,12 @@ public class CommonAlgorithms {
         }
 
         if (distanceArray[destV] == Constants.INF) {
-            throw new IllegalArgumentException("no path between the vertices");
+            throw new ArithmeticException("no path between the vertices");
         }
 
-        List<List<Integer>> pathEdges = new ArrayList<>();
+        List<Edge> pathEdges = new ArrayList<>();
         for (int curEdge = destV; curEdge != srcV;) {
-            List<Integer> edge = new ArrayList<>();
-            edge.add(pathArray[curEdge]);
-            edge.add(curEdge);
-            edge.add(sourceGraph.weight(pathArray[curEdge], curEdge));
-            pathEdges.add(0, edge);
-
+            pathEdges.add(0, new Edge(pathArray[curEdge], curEdge, sourceGraph.weight(pathArray[curEdge], curEdge)));
             curEdge = pathArray[curEdge];
         }
 

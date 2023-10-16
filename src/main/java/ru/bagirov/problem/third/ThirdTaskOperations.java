@@ -33,4 +33,8 @@ public class ThirdTaskOperations {
     public Set<Integer> getPivots() {
         return pivots.getSpec();
     }
+
+    public boolean getIsADirectedGraph() {
+        return sourceGraph.isADirectedGraph();
+    }
 }

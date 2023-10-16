@@ -28,8 +28,11 @@ public class SecondTaskOperations {
         }
     }
 
-    public int getWeakConnectionComponentsCount() {
-        return weakConnectionComponents.getSpec().size();
+    public Integer getWeakConnectionComponentsCount() {
+        if (weakConnectionComponents.getIsCalculated()) {
+            return weakConnectionComponents.getSpec().size();
+        }
+        return null;
     }
 
     public List<List<Integer>> getWeakConnectionComponents() {
@@ -40,12 +43,15 @@ public class SecondTaskOperations {
         return strongConnectionComponents.getSpec();
     }
 
-    public int getStrongConnectionComponentsCount() {
+    public Integer getStrongConnectionComponentsCount() {
         return strongConnectionComponents.getSpec().size();
     }
 
     public boolean getGraphConnectedness() {
-        return weakConnectionComponents.getSpec().size() == 1;
+        if (weakConnectionComponents.getIsCalculated()){
+            return weakConnectionComponents.getSpec().size() == 1;
+        }
+        throw new IllegalStateException("Weak connectedness components - Not calculated yet");
     }
 
     public boolean getDirGraphStrongConnectedness() {

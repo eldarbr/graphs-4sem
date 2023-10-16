@@ -35,7 +35,7 @@ public class FourthTaskOperations {
         } else if (algorithm == FourthTaskAlgorithm.COMPARING) {
             compareExecutionTime();
         } else {
-            throw new IllegalArgumentException("Wrong algorithm index");
+            throw new IllegalArgumentException("unsupported algorithm");
         }
         MSTweight.setSpec(_calculateMSTWeight());
     }
@@ -82,7 +82,7 @@ public class FourthTaskOperations {
         MSTEdgesList.setSpec(result);
     }
 
-    public int getMSTWeight() {
+    public Integer getMSTWeight() {
         return this.MSTweight.getSpec();
     }
 }

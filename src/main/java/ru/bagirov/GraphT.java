@@ -3,6 +3,7 @@ package ru.bagirov;
 import ru.bagirov.interfaces.ConsoleInterface;
 import ru.bagirov.interfaces.FileWriter;
 import ru.bagirov.interfaces.OutputGenerator;
+import ru.bagirov.problem.algorithms.Constants;
 import ru.bagirov.problem.fourth.FourthTaskAlgorithm;
 import ru.bagirov.problem.shared.Graph;
 import ru.bagirov.problem.shared.GraphSourceType;
@@ -38,13 +39,14 @@ public class GraphT {
 
         Graph myGraph;
         try {
+            System.out.println("Reading the graph");
             myGraph = new Graph((String)data[3], GraphSourceType.values()[(Integer)data[2]]);
         } catch (FileNotFoundException fileNotFoundException) {
             ConsoleInterface.printWrongInput("file not found. can't input the graph");
             System.exit(2);
             return;
         }
-
+        System.out.println("Reading is complete\n");
         String output = null;
         if (taskID == 1) {
             FirstTaskOperations firstTaskOperations = new FirstTaskOperations(myGraph);
@@ -62,8 +64,8 @@ public class GraphT {
 
         } else if (taskID == 3) {
             ThirdTaskOperations thirdTaskOperations = new ThirdTaskOperations(myGraph);
-            output = OutputGenerator.ThirdTaskOutputGenerator(thirdTaskOperations.getBridges(),
-                    thirdTaskOperations.getPivots());
+            output = OutputGenerator.ThirdTaskOutputGenerator(thirdTaskOperations.getIsADirectedGraph(),
+                    thirdTaskOperations.getBridges(), thirdTaskOperations.getPivots());
 
         } else if (taskID == 4) {
             FourthTaskOperations fourthTaskOperations = new FourthTaskOperations(myGraph,
@@ -72,16 +74,23 @@ public class GraphT {
                     fourthTaskOperations.getMSTWeight(), fourthTaskOperations.getExecutionTime());
 
         } else if (taskID == 5) {
-            FifthTaskOperations fifthTaskOperations;
+            FifthTaskOperations fifthTaskOperations = null;
             try {
                 fifthTaskOperations = new FifthTaskOperations(myGraph, ((int[])data[5])[0], ((int[])data[5])[1]);
-            } catch (IllegalArgumentException expected) {
-                System.out.println("No path between the points");
-                System.exit(0);
+            } catch (ArithmeticException expected) {
+                output = OutputGenerator.FifthTaskOutputGenerator(((int[])data[5])[0], ((int[])data[5])[1],
+                        Constants.INF, null);
+            } catch (IllegalArgumentException exception) {
+                ConsoleInterface.printWrongInput("Illegal vertex id");
+                System.exit(3);
                 return;
             }
-            output = OutputGenerator.FifthTaskOutputGenerator(fifthTaskOperations.getPathLength(),
-                    fifthTaskOperations.getPathEdges());
+
+            if (fifthTaskOperations != null) {
+                output = OutputGenerator.FifthTaskOutputGenerator(((int[])data[5])[0], ((int[])data[5])[1],
+                        fifthTaskOperations.getPathLength(),
+                        fifthTaskOperations.getPathEdges());
+            }
         }
 
         if (data[6] != null) {

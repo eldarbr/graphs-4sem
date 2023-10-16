@@ -32,11 +32,10 @@ public class FirstTaskOperations {
 
         this.eccentricity.setSpec(GraphMathOperations.calculateEccentricity(shortestDistMatrix.getSpec()));
 
-        List<Integer> radiusAndDiameter = GraphMathOperations.calculateRadiusAndDiameter(eccentricity.getSpec());
-        this.graphRadius.setSpec(radiusAndDiameter.get(0));
-        this.graphDiameter.setSpec(radiusAndDiameter.get(1));
-
         if (!sourceGraph.isADirectedGraph()) {
+            List<Integer> radiusAndDiameter = GraphMathOperations.calculateRadiusAndDiameter(eccentricity.getSpec());
+            this.graphRadius.setSpec(radiusAndDiameter.get(0));
+            this.graphDiameter.setSpec(radiusAndDiameter.get(1));
             this.centralVertices.setSpec(GraphMathOperations.calculateCentralVertices(eccentricity.getSpec(), graphRadius.getSpec()));
             this.peripheralVertices.setSpec(GraphMathOperations.calculatePeripheralVertices(eccentricity.getSpec(), graphDiameter.getSpec()));
         }
@@ -61,11 +60,11 @@ public class FirstTaskOperations {
         return this.eccentricity.getSpec();
     }
 
-    public int getGraphRadius() {
+    public Integer getGraphRadius() {
         return this.graphRadius.getSpec();
     }
 
-    public int getGraphDiameter() {
+    public Integer getGraphDiameter() {
         return this.graphDiameter.getSpec();
     }
 

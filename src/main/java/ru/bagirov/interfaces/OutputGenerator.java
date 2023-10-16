@@ -9,7 +9,7 @@ import java.util.Set;
 public class OutputGenerator {
 
     public static String FirstTaskOutputGenerator(boolean isDirected, int[][] verticesDegree,
-                                                  int[][] shortestDistMatrix, int diameter, int radius,
+                                                  int[][] shortestDistMatrix, Integer diameter, Integer radius,
                                                   List<Integer> centralVertices, List<Integer> peripheralVertices) {
         StringBuilder sb = new StringBuilder();
 
@@ -79,11 +79,13 @@ public class OutputGenerator {
         ////////////
         // Graph Diameter
 
-        sb.append("Graph Diameter:\n");
+        if (!isDirected && diameter!=null) {
+            sb.append("Graph Diameter:\n");
 
-        sb.append(diameter);
+            sb.append(diameter);
 
-        sb.append("\n\n");
+            sb.append("\n\n");
+        }
 
         // Graph Diameter
         ////////////
@@ -91,11 +93,13 @@ public class OutputGenerator {
         ////////////
         // Graph Radius
 
-        sb.append("Graph Radius:\n");
+        if (!isDirected && radius!=null) {
+            sb.append("Graph Radius:\n");
 
-        sb.append(radius);
+            sb.append(radius);
 
-        sb.append("\n\n");
+            sb.append("\n\n");
+        }
 
         // Graph Radius
         ////////////
@@ -201,8 +205,16 @@ public class OutputGenerator {
         return sb.toString();
     }
 
-    public static String ThirdTaskOutputGenerator(List<int[]> bridges, Set<Integer> pivots) {
+    public static String ThirdTaskOutputGenerator(boolean isDirected, List<int[]> bridges, Set<Integer> pivots) {
         StringBuilder sb = new StringBuilder();
+
+        sb.append("The graph is ");
+        if (isDirected) {
+            sb.append("directed\n\n");
+        } else {
+            sb.append("not directed\n\n");
+        }
+
         sb.append("Graph bridges\n");
         for (int[] bridgeEdge : bridges) {
             sb.append(bridgeEdge[0]+1);
@@ -254,11 +266,17 @@ public class OutputGenerator {
         return sb.toString();
     }
 
-    public static String FifthTaskOutputGenerator(int pathLength, List<List<Integer>> pathEdges) {
+    public static String FifthTaskOutputGenerator(int srcV, int dstV, int pathLength, List<Edge> pathEdges) {
         StringBuilder sb = new StringBuilder();
 
+        sb.append("Src vertex: ");
+        sb.append(srcV+1);
+        sb.append("\nDst vertex: ");
+        sb.append(dstV+1);
+        sb.append("\n\n");
+
         if (pathLength == Constants.INF) {
-            sb.append("Path can't be found");
+            sb.append("No path between the vertices");
             return sb.toString();
         }
 
@@ -266,12 +284,12 @@ public class OutputGenerator {
         sb.append(pathLength);
 
         sb.append("\n\nPath edges:\n");
-        for (List<Integer> edge: pathEdges) {
-            sb.append(edge.get(0)+1);
+        for (Edge edge: pathEdges) {
+            sb.append(edge.from+1);
             sb.append("\t");
-            sb.append(edge.get(1)+1);
+            sb.append(edge.to+1);
             sb.append("\t");
-            sb.append(edge.get(2));
+            sb.append(edge.weight);
             sb.append("\n");
         }
 
