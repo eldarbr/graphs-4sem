@@ -52,7 +52,7 @@ public class CommonAlgorithms {
 
         // sort by edge weight
         List<Edge> sortedEdgeList = sourceGraph.getGraphEdgesList();
-        sortedEdgeList.sort(Comparator.comparingInt(list -> (Integer) list.weight));
+        sortedEdgeList.sort(Comparator.comparingInt(list -> list.weight));
 
         List<Edge> MST = new ArrayList<>();
 

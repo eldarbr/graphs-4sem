@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FourthTaskOperations {
-    private Graph sourceGraph;
+    private final Graph sourceGraph;
 
-    private TaskSpecCalculationResult<List<Edge>> MSTEdgesList = new TaskSpecCalculationResult<>();
-    private TaskSpecCalculationResult<Integer> MSTweight = new TaskSpecCalculationResult<>();
-    private TaskSpecCalculationResult<List<Long>> calculationTime = new TaskSpecCalculationResult<>();
+    private final TaskSpecCalculationResult<List<Edge>> MSTEdgesList = new TaskSpecCalculationResult<>();
+    private final TaskSpecCalculationResult<Integer> MSTweight = new TaskSpecCalculationResult<>();
+    private final TaskSpecCalculationResult<List<Long>> calculationTime = new TaskSpecCalculationResult<>();
 
     public FourthTaskOperations(final Graph sourceGraph, final FourthTaskAlgorithm algorithm){
         this.sourceGraph = Graph.deepCopy(sourceGraph);

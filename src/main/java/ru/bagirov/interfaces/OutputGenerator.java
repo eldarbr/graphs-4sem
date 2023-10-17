@@ -30,20 +30,20 @@ public class OutputGenerator {
         }
         if (isDirected) {
             sb.append("\ninD:");
-            for (int i = 0; i < verticesDegree.length; i++) {
+            for (int[] vertexDegree : verticesDegree) {
                 sb.append("\t");
-                sb.append(verticesDegree[i][1]);
+                sb.append(vertexDegree[1]);
             }
             sb.append("\noutD:");
-            for (int i = 0; i < verticesDegree.length; i++) {
+            for (int[] vertexDegree : verticesDegree) {
                 sb.append("\t");
-                sb.append(verticesDegree[i][2]);
+                sb.append(vertexDegree[2]);
             }
         } else {
             sb.append("\ninoutD:");
-            for (int i = 0; i < verticesDegree.length; i++) {
+            for (int[] vertexDegree : verticesDegree) {
                 sb.append("\t");
-                sb.append(verticesDegree[i][0]);
+                sb.append(vertexDegree[0]);
             }
         }
         sb.append("\n\n");
@@ -56,6 +56,7 @@ public class OutputGenerator {
 
         sb.append("Shortest Dist Matrix:");
 
+        //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < shortestDistMatrix.length; i++) {
             sb.append("\n");
             for (int j = 0; j < shortestDistMatrix[0].length; j++) {
@@ -243,11 +244,11 @@ public class OutputGenerator {
             sb.append("\n\nAlgorithm comparison:\n");
             sb.append("Kruskala:\t");
             sb.append(calculationTime.get(0)/1000);
-            sb.append(" microsec\nPrima:\t\t");
+            sb.append(" microseconds\nPrima:\t\t");
             sb.append(calculationTime.get(1)/1000);
-            sb.append(" microsec\nBoruvka:\t");
+            sb.append(" microseconds\nBoruvka:\t");
             sb.append(calculationTime.get(2)/1000);
-            sb.append(" microsec");
+            sb.append(" microseconds");
         }
 
 
@@ -291,6 +292,36 @@ public class OutputGenerator {
             sb.append("\t");
             sb.append(edge.weight);
             sb.append("\n");
+        }
+
+        return sb.toString();
+    }
+
+    public static String SixthTaskOutputGenerator(final int srcV, final int[] distanceArray) {
+
+        final int distanceArrayLength = distanceArray.length;
+        if (srcV >= distanceArrayLength || srcV < 0) {
+            throw new IllegalArgumentException("src vertex id not in range 0-%d".formatted(distanceArrayLength));
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Shortest paths from ");
+        sb.append(srcV+1);
+        sb.append("\nto\tdist\n");
+
+        for (int i = 0; i < distanceArrayLength; i++) {
+            if (i != srcV) {
+                sb.append(i+1);
+                sb.append("\t");
+                int distance = distanceArray[i];
+                if (distance == Constants.INF) {
+                    sb.append("inf");
+                } else {
+                    sb.append(distance);
+                }
+                sb.append("\n");
+            }
         }
 
         return sb.toString();

@@ -17,6 +17,7 @@ public class Graph {
     }
 
     public Graph(final int[][] graphAdjacencyMatrix) {
+        //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < graphAdjacencyMatrix.length; i++) {
             if (graphAdjacencyMatrix[i].length!=graphAdjacencyMatrix.length) {
                 throw new IllegalArgumentException("not a quadratic matrix");
@@ -129,16 +130,14 @@ class GraphDirectedProperty {
     }
 
     static boolean calculateIsADirectedGraph(final int[][] adjacencyMatrix) {
-        boolean isDirected = false;
         for (int i = 0; i < adjacencyMatrix.length; i++) {
             for (int j = i+1; j < adjacencyMatrix.length; j++) {
                 if (adjacencyMatrix[i][j] != adjacencyMatrix[j][i]) {
-                    isDirected = true;
-                    return isDirected;
+                    return true;
                 }
             }
         }
-        return isDirected;
+        return false;
     }
 
 }

@@ -31,19 +31,27 @@ public class ConsoleInterface {
             If a directed graph is the input, calculations are done for its correlated graph""";
 
     private static final String HELP_MESSAGE_FOURTH = """
-            {-k, -p, -b, -s}choose the algorithm to calculate (kruskala, prima, boruvka, comparing)
+            
+            {-k, -p, -b, -s}choose the algorithm to calculate with (kruskala, prima, boruvka, comparing)
             
             This task (4) calculates:
             minimum spanning tree of the graph""";
 
     private static final String HELP_MESSAGE_FIFTH = """
                 
-                
                 -n          source vertex id [0-k]
                 -d          destination vertex id [0-k]
             
             This task (5) calculates:
             a geodesic chain between two vertices in the graph""";
+
+    private static final String HELP_MESSAGE_SIXTH = """
+            
+                -n          start vertex
+             {-D, -L, -B}   choose the algorithm to calculate with (dijkstra, levit, bellman-ford)
+            
+            This task (6) calculates:
+            distance from desired vertex to any other in the graph""";
 
     public static void printHelp(int taskID) {
         System.out.print(HELP_MESSAGE_COMMON);
@@ -57,6 +65,8 @@ public class ConsoleInterface {
             System.out.print(HELP_MESSAGE_FOURTH);
         } else if (taskID == 5) {
             System.out.print(HELP_MESSAGE_FIFTH);
+        } else if (taskID == 6) {
+            System.out.print(HELP_MESSAGE_SIXTH);
         }
         System.out.println();
     }
@@ -64,129 +74,6 @@ public class ConsoleInterface {
     public static void printWrongInput(String info) {
         System.out.println("The input is wrong:");
         System.out.println(info);
-    }
-
-    public static Object[] argsHandler(String[] inpArgs) {
-
-        String filepath = null;
-        int inputType = -1;
-
-        boolean helpRequested = false;
-        int taskId = -1;
-
-        int fourthAlgo = -1;
-        boolean fourthTaskChosen = false;
-
-        int[] fifthSrcDst = new int[] {-1, -1};
-
-        String outputFilePath = null;
-
-        for (int i = 0; i < inpArgs.length; i++) {
-            if (inpArgs[i].equals("-o") && i < inpArgs.length-1) {
-                if (outputFilePath != null) {
-                    throw new IllegalArgumentException("output filepath was specified twice");
-                }
-                outputFilePath = inpArgs[i+1];
-            }
-
-            if (inpArgs[i].equals("-t") && i < inpArgs.length-1) {
-                if (taskId != -1) {
-                    throw new IllegalArgumentException("task id was already specified");
-                }
-                taskId = Integer.parseInt(inpArgs[i+1]);
-            }
-            if (inpArgs[i].equals("-h")) {
-                helpRequested = true;
-            }
-            if (inpArgs[i].equals("-e") && i < inpArgs.length-1) {
-                if (inputType!=-1) {
-                    throw new IllegalArgumentException("filepath and type were already specified");
-                }
-                inputType = 0;
-                filepath = inpArgs[i+1];
-            }
-            if (inpArgs[i].equals("-m") && i < inpArgs.length-1) {
-                if (inputType!=-1) {
-                    throw new IllegalArgumentException("filepath and type were already specified");
-                }
-                inputType = 1;
-                filepath = inpArgs[i+1];
-            }
-            if (inpArgs[i].equals("-l") && i < inpArgs.length-1) {
-                if (inputType!=-1) {
-                    throw new IllegalArgumentException("filepath and type were already specified");
-                }
-                inputType = 2;
-                filepath = inpArgs[i+1];
-            }
-            if (inpArgs[i].equals("-k")) {
-                if (fourthTaskChosen) {
-                    throw new IllegalArgumentException("wrong key combination: -k, -p, -b, -s");
-                }
-                fourthAlgo = 0;
-                fourthTaskChosen = true;
-            }
-            if (inpArgs[i].equals("-p")) {
-                if (fourthTaskChosen) {
-                    throw new IllegalArgumentException("wrong key combination: -k, -p, -b, -s");
-                }
-                fourthAlgo = 1;
-                fourthTaskChosen = true;
-            }
-            if (inpArgs[i].equals("-b")) {
-                if (fourthTaskChosen) {
-                    throw new IllegalArgumentException("wrong key combination: -k, -p, -b, -s");
-                }
-                fourthAlgo = 2;
-                fourthTaskChosen = true;
-            }
-            if (inpArgs[i].equals("-s")) {
-                if (fourthTaskChosen) {
-                    throw new IllegalArgumentException("wrong key combination: -k, -p, -b, -s");
-                }
-                fourthAlgo = 3;
-                fourthTaskChosen = true;
-            }
-            if (inpArgs[i].equals("-n") && i < inpArgs.length-1) {
-                try {
-                    fifthSrcDst[0] = Integer.parseInt(inpArgs[i+1])-1;
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("wrong number format for the key -n");
-                }
-            }
-            if (inpArgs[i].equals("-d") && i < inpArgs.length-1) {
-                try {
-                    fifthSrcDst[1] = Integer.parseInt(inpArgs[i+1])-1;
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("wrong number format for the key -d");
-                }
-            }
-        }
-        if (taskId < 1 || taskId > 5) {
-            throw new IllegalArgumentException("wrong task id");
-        }
-        if (helpRequested) {
-            return new Object[]{ taskId, helpRequested, inputType, filepath, fourthAlgo, fifthSrcDst};
-        }
-        if (inputType == -1) {
-            throw new IllegalArgumentException("wrong input type/fp provided");
-        }
-        if (taskId!=4 && fourthTaskChosen) {
-            throw new IllegalArgumentException("keys: -k, -p, -b, -s - only allowed for the 4th task");
-        }
-        if (taskId == 4 && !fourthTaskChosen) {
-            throw new IllegalArgumentException("one of the keys: -k, -p, -b, -s - were not provided the 4th task");
-        }
-
-        if (taskId == 5 && (fifthSrcDst[0] == -1 || fifthSrcDst[1] == -1)) {
-            throw new IllegalArgumentException("for the 5th task no keys were provided: -n or -d");
-        }
-
-        if (taskId != 5 && (fifthSrcDst[0] != -1 || fifthSrcDst[1] != -1)) {
-            throw new IllegalArgumentException("keys: -n, -d - only allowed for the 5th task");
-        }
-
-        return new Object[]{ taskId, helpRequested, inputType, filepath, fourthAlgo, fifthSrcDst, outputFilePath};
     }
 
 }

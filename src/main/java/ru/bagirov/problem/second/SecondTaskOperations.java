@@ -43,10 +43,6 @@ public class SecondTaskOperations {
         return strongConnectionComponents.getSpec();
     }
 
-    public Integer getStrongConnectionComponentsCount() {
-        return strongConnectionComponents.getSpec().size();
-    }
-
     public boolean getGraphConnectedness() {
         if (weakConnectionComponents.getIsCalculated()){
             return weakConnectionComponents.getSpec().size() == 1;
