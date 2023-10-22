@@ -347,4 +347,20 @@ public class OutputGenerator {
 
         return sb.toString();
     }
+
+    public static String TenthTaskOutputGenerator(int source, int sink, final List<Edge> edgesFlows, int maxFlow) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("%d - max flow from %d to %d\n".formatted(maxFlow, source+1, sink+1));
+
+        for (Edge edge : edgesFlows) {
+            sb.append(edge.from+1);
+            sb.append(" -> ");
+            sb.append(edge.to+1);
+            sb.append(" = ");
+            sb.append(edge.weight);
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }

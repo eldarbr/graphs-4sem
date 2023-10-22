@@ -269,71 +269,79 @@ public class CommonAlgorithms {
         return shortestDistances;
     }
 
-    public static List<Edge> johnsonShortestPairs(final Graph sourceGraph) {
-        Graph myGraph = new Graph(addZeroVertices(sourceGraph));
-        int myGraphLength = myGraph.getVerticesCount();
 
-        int[] bf = bellmanFordShortestDistances(myGraph, myGraphLength-1);
-        if (bf != null) {
+    public static Object[] fordFulkerson(final Graph sourceGraph, int[] sourceSink) {
 
-            // change the weights : w'(u, v) = w(u, v) + h(u) - h(v)
-            for (int u = 0; u < myGraphLength; u++) {
-                for (int v = 0; v < myGraphLength; v++) {
-                    int w = myGraph.weight(u, v);
-                    if (w != Constants.INF) {
-                        int hu = bf[u];
-                        int hv = bf[v];
-                        myGraph.getGraphAdjacencyMatrix()[u][v] = w+hu-hv;
-                    }
+        int[][] myMatrix = Graph.deepCopy(sourceGraph).getGraphAdjacencyMatrix();
+
+
+        int source = sourceSink[0];
+        int sink = sourceSink[1];
+
+        Integer[] parent = new Integer[sourceGraph.getVerticesCount()];
+
+        int maxFlow = 0;
+        List<Edge> res = new ArrayList<>();
+
+        while(GraphSearch.BFSFF(sourceGraph, source, sink, parent)) {
+            Integer pathFlow = null;
+            int s = sink;
+            while (s != source) {
+                if (pathFlow == null) {
+                    pathFlow = myMatrix[parent[s]][s];
+                } else if (pathFlow > myMatrix[parent[s]][s]) {
+                    pathFlow = myMatrix[parent[s]][s];
+                }
+                s = parent[s];
+            }
+
+            if (pathFlow != null) {
+                maxFlow += pathFlow;
+            }
+
+
+            int v = sink;
+
+            while (v != source) {
+                int u = parent[v];
+                myMatrix[u][v] -= pathFlow;
+                myMatrix[v][u] -= pathFlow;
+                v = parent[v];
+            }
+        }
+
+        for (int i = 0; i < sourceGraph.getVerticesCount(); i++) {
+            for (int j = 0; j < sourceGraph.getVerticesCount(); j++) {
+                if (myMatrix[i][j] != 0) {
+                    res.add(new Edge(i, j, myMatrix[i][j]));
                 }
             }
-
-            myGraph = new Graph(deleteZeroVertices(myGraph));
-
-            List<Edge> res = new ArrayList<>();
-
-            for (int i = 0; i < myGraph.getVerticesCount(); i++) {
-                int[] distances = (int[])dijkstraShortestPath(myGraph, i, null)[2];
-                // distance : i -> x in distances
-                for (int j = 0; j < distances.length; j++) {
-                    int w = distances[j];
-                    int hu = bf[i];
-                    int hv = bf[j];
-                    res.add(new Edge(i, j, w + hv - hu));
-                }
-            }
-            return res;
-
-        } else {
-            return null;
         }
+        return new Object[] {res, maxFlow};
     }
 
-    private static int[][] addZeroVertices(final Graph sourceGraph) {
-        int[][] sourceMatrix = sourceGraph.getGraphAdjacencyMatrix();
-        int srcSize = sourceMatrix.length;
-        int[][] kroMatrix = new int[srcSize+1][srcSize+1];
-        for (int i = 0; i < srcSize; i++) {
-            for (int j = 0; j < srcSize; j++) {
-                kroMatrix[i][j] = sourceMatrix[i][j];
-            }
-        }
-        for (int i = 0; i < srcSize+1; i++) {
-            kroMatrix[i][srcSize] = Constants.INF;
-            kroMatrix[srcSize][i] = 1;
-        }
-        return kroMatrix;
-    }
+    public static int[] findSourceSink(final Graph sourceGraph) {
+        int source = 0;
+        int sink = 0;
 
-    private static int[][] deleteZeroVertices(final Graph sourceGraph) {
-        int[][] sourceMatrix = sourceGraph.getGraphAdjacencyMatrix();
-        int srcSize = sourceMatrix.length;
-        int[][] kroMatrix = new int[srcSize-1][srcSize-1];
-        for (int i = 0; i < srcSize-1; i++) {
-            for (int j = 0; j < srcSize-1; j++) {
-                sourceMatrix[i][j] = kroMatrix[i][j];
+        for (int i = 0; i < sourceGraph.getGraphAdjacencyMatrix().length; i++) {
+
+            int outgoingEdges = 0;
+            int incomingEdges = 0;
+
+            for (int j = 0; j < sourceGraph.getGraphAdjacencyMatrix().length; j++) {
+                if (sourceGraph.getGraphAdjacencyMatrix()[i][j] > 0)
+                    outgoingEdges++;
+                if (sourceGraph.getGraphAdjacencyMatrix()[j][i] > 0)
+                    incomingEdges++;
             }
+
+            if (outgoingEdges > 0 && incomingEdges == 0)
+                source = i;
+            else if (outgoingEdges == 0 && incomingEdges > 0)
+                sink = i;
         }
-        return kroMatrix;
+
+        return new int[]{source, sink};
     }
 }

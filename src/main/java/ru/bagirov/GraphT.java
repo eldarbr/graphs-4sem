@@ -10,6 +10,7 @@ import ru.bagirov.problem.shared.Graph;
 
 import ru.bagirov.problem.first.FirstTaskOperations;
 import ru.bagirov.problem.second.SecondTaskOperations;
+import ru.bagirov.problem.tenth.TenthTaskOperations;
 import ru.bagirov.problem.third.ThirdTaskOperations;
 import ru.bagirov.problem.fourth.FourthTaskOperations;
 import ru.bagirov.problem.fifth.FifthTaskOperations;
@@ -112,6 +113,12 @@ public class GraphT {
         } else if (parser.getTaskId() == 7) {
             SeventhTaskOperations seventhTaskOperations = new SeventhTaskOperations(myGraph);
             output = OutputGenerator.SeventhTaskOutputGenerator(seventhTaskOperations.getPairsDistances());
+        } else if (parser.getTaskId() == 10) {
+            TenthTaskOperations tenthTaskOperations = new TenthTaskOperations(myGraph);
+            output = OutputGenerator.TenthTaskOutputGenerator(tenthTaskOperations.getSourceSink()[0],
+                    tenthTaskOperations.getSourceSink()[1],
+                    tenthTaskOperations.getFlows(),
+                    tenthTaskOperations.getMaxFlow());
         }
 
         if (output == null) {
