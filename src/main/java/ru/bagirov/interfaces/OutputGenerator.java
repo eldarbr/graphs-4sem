@@ -326,4 +326,25 @@ public class OutputGenerator {
 
         return sb.toString();
     }
+
+    public static String SeventhTaskOutputGenerator(final List<Edge> distancePairs) {
+        StringBuilder sb = new StringBuilder();
+
+        if (distancePairs == null) {
+            sb.append("negative cycle");
+            return sb.toString();
+
+        }
+
+        for (Edge edge : distancePairs) {
+            sb.append(edge.from+1);
+            sb.append(" -> ");
+            sb.append(edge.to+1);
+            sb.append(" = ");
+            sb.append(edge.weight);
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
 }

@@ -5,6 +5,7 @@ import ru.bagirov.interfaces.ConsoleInterface;
 import ru.bagirov.interfaces.FileWriter;
 import ru.bagirov.interfaces.OutputGenerator;
 import ru.bagirov.problem.algorithms.Constants;
+import ru.bagirov.problem.seventh.SeventhTaskOperations;
 import ru.bagirov.problem.shared.Graph;
 
 import ru.bagirov.problem.first.FirstTaskOperations;
@@ -108,6 +109,9 @@ public class GraphT {
                 output = OutputGenerator.SixthTaskOutputGenerator(parser.getSixthStartVertex(),
                         sixthTaskOperations.getShortestDistances());
             }
+        } else if (parser.getTaskId() == 7) {
+            SeventhTaskOperations seventhTaskOperations = new SeventhTaskOperations(myGraph);
+            output = OutputGenerator.SeventhTaskOutputGenerator(seventhTaskOperations.getPairsDistances());
         }
 
         if (output == null) {

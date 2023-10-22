@@ -156,12 +156,14 @@ public class CommonAlgorithms {
         return MST;
     }
 
-    public static Object[] dijkstraShortestPath(final Graph sourceGraph, int srcV, int destV) {
+    public static Object[] dijkstraShortestPath(final Graph sourceGraph, int srcV, Integer destV) {
 
         int verticesCount = sourceGraph.getVerticesCount();
 
-        if (srcV >= verticesCount || destV >= verticesCount) {
-            throw new IllegalArgumentException("false vertex index");
+        if (srcV >= verticesCount || destV != null) {
+            if (destV >= verticesCount || srcV >= verticesCount) {
+                throw new IllegalArgumentException("false vertex index");
+            }
         }
 
         LinkedList<int[]> verticesQueue = new LinkedList<>();
@@ -186,18 +188,21 @@ public class CommonAlgorithms {
             }
         }
 
-        if (distanceArray[destV] == Constants.INF) {
-            throw new ArithmeticException("no path between the vertices");
+        if (destV != null) {
+            if (distanceArray[destV] == Constants.INF) {
+                throw new ArithmeticException("no path between the vertices");
+            }
         }
 
-        List<Edge> pathEdges = new ArrayList<>();
-        for (int curEdge = destV; curEdge != srcV;) {
-            pathEdges.add(0, new Edge(pathArray[curEdge], curEdge, sourceGraph.weight(pathArray[curEdge], curEdge)));
-            curEdge = pathArray[curEdge];
+        if (destV != null) {
+            List<Edge> pathEdges = new ArrayList<>();
+            for (int curEdge = destV; curEdge != srcV;) {
+                pathEdges.add(0, new Edge(pathArray[curEdge], curEdge, sourceGraph.weight(pathArray[curEdge], curEdge)));
+                curEdge = pathArray[curEdge];
+            }
+            return new Object[]{distanceArray[destV], pathEdges, distanceArray};
         }
-
-
-        return new Object[]{distanceArray[destV], pathEdges, distanceArray};
+        return new Object[]{null,null,distanceArray};
     }
 
 
@@ -262,5 +267,73 @@ public class CommonAlgorithms {
             }
         }
         return shortestDistances;
+    }
+
+    public static List<Edge> johnsonShortestPairs(final Graph sourceGraph) {
+        Graph myGraph = new Graph(addZeroVertices(sourceGraph));
+        int myGraphLength = myGraph.getVerticesCount();
+
+        int[] bf = bellmanFordShortestDistances(myGraph, myGraphLength-1);
+        if (bf != null) {
+
+            // change the weights : w'(u, v) = w(u, v) + h(u) - h(v)
+            for (int u = 0; u < myGraphLength; u++) {
+                for (int v = 0; v < myGraphLength; v++) {
+                    int w = myGraph.weight(u, v);
+                    if (w != Constants.INF) {
+                        int hu = bf[u];
+                        int hv = bf[v];
+                        myGraph.getGraphAdjacencyMatrix()[u][v] = w+hu-hv;
+                    }
+                }
+            }
+
+            myGraph = new Graph(deleteZeroVertices(myGraph));
+
+            List<Edge> res = new ArrayList<>();
+
+            for (int i = 0; i < myGraph.getVerticesCount(); i++) {
+                int[] distances = (int[])dijkstraShortestPath(myGraph, i, null)[2];
+                // distance : i -> x in distances
+                for (int j = 0; j < distances.length; j++) {
+                    int w = distances[j];
+                    int hu = bf[i];
+                    int hv = bf[j];
+                    res.add(new Edge(i, j, w + hv - hu));
+                }
+            }
+            return res;
+
+        } else {
+            return null;
+        }
+    }
+
+    private static int[][] addZeroVertices(final Graph sourceGraph) {
+        int[][] sourceMatrix = sourceGraph.getGraphAdjacencyMatrix();
+        int srcSize = sourceMatrix.length;
+        int[][] kroMatrix = new int[srcSize+1][srcSize+1];
+        for (int i = 0; i < srcSize; i++) {
+            for (int j = 0; j < srcSize; j++) {
+                kroMatrix[i][j] = sourceMatrix[i][j];
+            }
+        }
+        for (int i = 0; i < srcSize+1; i++) {
+            kroMatrix[i][srcSize] = Constants.INF;
+            kroMatrix[srcSize][i] = 1;
+        }
+        return kroMatrix;
+    }
+
+    private static int[][] deleteZeroVertices(final Graph sourceGraph) {
+        int[][] sourceMatrix = sourceGraph.getGraphAdjacencyMatrix();
+        int srcSize = sourceMatrix.length;
+        int[][] kroMatrix = new int[srcSize-1][srcSize-1];
+        for (int i = 0; i < srcSize-1; i++) {
+            for (int j = 0; j < srcSize-1; j++) {
+                sourceMatrix[i][j] = kroMatrix[i][j];
+            }
+        }
+        return kroMatrix;
     }
 }
