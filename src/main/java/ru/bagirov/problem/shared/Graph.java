@@ -1,5 +1,7 @@
 package ru.bagirov.problem.shared;
 
+import ru.bagirov.problem.algorithms.Constants;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -33,6 +35,9 @@ public class Graph {
     }
 
     public int weight(final int vi, final int vj) {
+        if (graphAdjacencyMatrix[vi][vj] == 0) {
+            return Constants.INF;
+        }
         return graphAdjacencyMatrix[vi][vj];
     }
 
@@ -56,6 +61,7 @@ public class Graph {
 
     // source - dest - weight
     public List<Edge> getGraphEdgesList() {
+        //System.out.print("might be faulty Graph.getGraphEdgesList\n");
         List<Edge> edges = new ArrayList<>();
         for (int i = 0; i < verticesCount; i++) {
             int j = i;

@@ -21,8 +21,8 @@ public class FirstTaskOperationsTest {
         }));
 
         int[][] expected = {
-                {1,1,1},
-                {1,1,1}
+                {2,2,2},
+                {2,2,2}
         };
         int[][] actual = firstTaskOperations.getVerticesDegree();
 

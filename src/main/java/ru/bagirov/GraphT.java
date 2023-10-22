@@ -77,6 +77,7 @@ public class GraphT {
             try {
                 fifthTaskOperations = new FifthTaskOperations(myGraph, vertices[0], vertices[1]);
             } catch (ArithmeticException expected) {
+                //noinspection UnusedAssignment
                 output = OutputGenerator.FifthTaskOutputGenerator(vertices[0], vertices[1], Constants.INF, null);
             } catch (IllegalArgumentException exception) {
                 ConsoleInterface.printWrongInput("Illegal vertex id");

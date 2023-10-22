@@ -48,7 +48,7 @@ public class ConsoleInterface {
     private static final String HELP_MESSAGE_SIXTH = """
             
                 -n          start vertex
-             {-D, -L, -B}   choose the algorithm to calculate with (dijkstra, levit, bellman-ford)
+            {-D, -L, -B}    choose the algorithm to calculate with (dijkstra, levit, bellman-ford)
             
             This task (6) calculates:
             distance from desired vertex to any other in the graph""";

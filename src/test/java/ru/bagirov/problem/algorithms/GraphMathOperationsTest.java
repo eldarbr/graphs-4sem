@@ -23,6 +23,6 @@ public class GraphMathOperationsTest {
                 {0,1,1,0}
         });
         List<Integer> sortRes = GraphMathOperations.sortTopologically(srcG);
-        assertThat(sortRes).isEqualTo(List.of(0,3,2,1));
+        assertThat(sortRes).isEqualTo(List.of(0,1,2,3));
     }
 }

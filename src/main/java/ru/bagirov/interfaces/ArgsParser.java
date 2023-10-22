@@ -128,6 +128,9 @@ public class ArgsParser {
     }
 
     private void _checkArgsCollision() {
+        if (helpRequested) {
+            return;
+        }
         if (taskId == null) {
             throw new IllegalArgumentException("specify task id with -t");
         }

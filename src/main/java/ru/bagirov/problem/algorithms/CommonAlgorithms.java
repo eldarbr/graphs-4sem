@@ -210,18 +210,22 @@ public class CommonAlgorithms {
         Arrays.fill(shortestDistances, Constants.INF);
         shortestDistances[srcV] = 0;
 
-        for (int i = 0; i < verticesCount-1; i++) {
-            for (final Edge edge : sourceGraph.getGraphEdgesList()) {
-                if (shortestDistances[edge.from] != Constants.INF && shortestDistances[edge.to] == Constants.INF ||
-                        shortestDistances[edge.from] + edge.weight < shortestDistances[edge.to]) {
-                    shortestDistances[edge.to] = shortestDistances[edge.from] + edge.weight;
+
+        for (int i = 1; i < verticesCount; i++) {
+            for (int j = 0; j < verticesCount; j++) {
+                List<Edge> edges = sourceGraph.getVertexEdgesList(j);
+                for (final Edge edge : edges) {
+                    if (shortestDistances[edge.from] != Constants.INF &&
+                            shortestDistances[edge.from] + edge.weight < shortestDistances[edge.to]) {
+                        shortestDistances[edge.to] = shortestDistances[edge.from] + edge.weight;
+                    }
                 }
             }
         }
 
         for (final Edge edge : sourceGraph.getGraphEdgesList()) {
             if (shortestDistances[edge.from] != Constants.INF &&
-                    shortestDistances[edge.from]+edge.weight < shortestDistances[edge.to]) {
+                    shortestDistances[edge.from] + edge.weight < shortestDistances[edge.to]) {
                 return null;
             }
         }

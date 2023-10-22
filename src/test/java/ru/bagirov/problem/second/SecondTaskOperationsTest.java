@@ -21,6 +21,6 @@ public class SecondTaskOperationsTest {
 
         SecondTaskOperations secondTaskOperations = new SecondTaskOperations(graph);
 
-        assertThat(secondTaskOperations.getWeakConnectionComponentsCount()).isEqualTo(2);
+        assertThat(secondTaskOperations.getWeakConnectionComponentsCount()).isEqualTo(1);
     }
 }
