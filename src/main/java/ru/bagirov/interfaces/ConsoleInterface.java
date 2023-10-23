@@ -53,20 +53,45 @@ public class ConsoleInterface {
             This task (6) calculates:
             distance from desired vertex to any other in the graph""";
 
+    private static final String HELP_MESSAGE_SEVENTH = """
+            
+            
+            This task (7) calculates:
+            distance between all pairs of vertices using Johnon's algorithm""";
+
+    private static final String HELP_MESSAGE_TENTH = """
+            
+            
+            This task (10) calculates:
+            maximum flow in the network using Ford-Fulkerson algorithm""";
+
     public static void printHelp(int taskID) {
         System.out.print(HELP_MESSAGE_COMMON);
-        if (taskID == 1) {
-            System.out.print(HELP_MESSAGE_FIRST);
-        } else if (taskID == 2) {
-            System.out.print(HELP_MESSAGE_SECOND);
-        } else if (taskID == 3) {
-            System.out.print(HELP_MESSAGE_THIRD);
-        } else if (taskID == 4) {
-            System.out.print(HELP_MESSAGE_FOURTH);
-        } else if (taskID == 5) {
-            System.out.print(HELP_MESSAGE_FIFTH);
-        } else if (taskID == 6) {
-            System.out.print(HELP_MESSAGE_SIXTH);
+        switch (taskID) {
+            case 1:
+                System.out.print(HELP_MESSAGE_FIRST);
+                break;
+            case 2:
+                System.out.print(HELP_MESSAGE_SECOND);
+                break;
+            case 3:
+                System.out.print(HELP_MESSAGE_THIRD);
+                break;
+            case 4:
+                System.out.print(HELP_MESSAGE_FOURTH);
+                break;
+            case 5:
+                System.out.print(HELP_MESSAGE_FIFTH);
+                break;
+            case 6:
+                System.out.print(HELP_MESSAGE_SIXTH);
+                break;
+            case 7:
+                System.out.print(HELP_MESSAGE_SEVENTH);
+                break;
+            case 10:
+                System.out.print(HELP_MESSAGE_TENTH);
+                break;
         }
         System.out.println();
     }
