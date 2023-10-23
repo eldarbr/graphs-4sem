@@ -10,7 +10,7 @@ import java.util.List;
 public class TenthTaskOperations {
     private final Graph sourceGraph;
 
-    private final TaskSpecCalculationResult<List<Edge>> flows = new TaskSpecCalculationResult<>();
+    private final TaskSpecCalculationResult<List<int[]>> flows = new TaskSpecCalculationResult<>();
     private final TaskSpecCalculationResult<Integer> maxFlow = new TaskSpecCalculationResult<>();
 
     private final TaskSpecCalculationResult<int[]> sourceSink = new TaskSpecCalculationResult<>();
@@ -23,14 +23,14 @@ public class TenthTaskOperations {
     private void calculateSpecs() {
         this.sourceSink.setSpec(CommonAlgorithms.findSourceSink(sourceGraph));
         Object[] data = CommonAlgorithms.fordFulkerson(sourceGraph, sourceSink.getSpec());
-        this.flows.setSpec((List<Edge>)data[0]);
+        this.flows.setSpec((List<int[]>)data[0]);
         this.maxFlow.setSpec((Integer)data[1]);
     }
 
     public Integer getMaxFlow() {
         return maxFlow.getSpec();
     }
-    public List<Edge> getFlows() {
+    public List<int[]> getFlows() {
         return flows.getSpec();
     }
     public int[] getSourceSink() {

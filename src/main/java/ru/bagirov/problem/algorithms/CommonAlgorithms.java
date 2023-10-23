@@ -281,9 +281,9 @@ public class CommonAlgorithms {
         Integer[] parent = new Integer[sourceGraph.getVerticesCount()];
 
         int maxFlow = 0;
-        List<Edge> res = new ArrayList<>();
+        List<int[]> res = new ArrayList<>();
 
-        while(GraphSearch.BFSFF(sourceGraph, source, sink, parent)) {
+        while(GraphSearch.BFSFF(myMatrix, source, sink, parent)) {
             Integer pathFlow = null;
             int s = sink;
             while (s != source) {
@@ -305,16 +305,19 @@ public class CommonAlgorithms {
             while (v != source) {
                 int u = parent[v];
                 myMatrix[u][v] -= pathFlow;
-                myMatrix[v][u] -= pathFlow;
+                myMatrix[v][u] += pathFlow;
                 v = parent[v];
             }
         }
-
+        final int[][] sourceMatrix = sourceGraph.getGraphAdjacencyMatrix();
         for (int i = 0; i < sourceGraph.getVerticesCount(); i++) {
             for (int j = 0; j < sourceGraph.getVerticesCount(); j++) {
-                if (myMatrix[i][j] != 0) {
-                    res.add(new Edge(i, j, myMatrix[i][j]));
-                }
+                if (sourceMatrix[i][j] > 0) {
+                    int flow = sourceMatrix[i][j] - myMatrix[i][j];
+                    res.add(new int[]{i, j, flow, sourceMatrix[i][j]});
+                } /*else if (sourceMatrix[i][j] == 0 && myMatrix[i][j] > 0) {
+                    res.add(new int[]{i, j, myMatrix[i][j], sourceMatrix[i][j]});
+                }*/
             }
         }
         return new Object[] {res, maxFlow};

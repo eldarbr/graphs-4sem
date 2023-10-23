@@ -112,8 +112,8 @@ public class GraphSearch {
         }
     }
 
-    public static boolean BFSFF(final Graph srcGraph, final int start, final int end, Integer[] parent) {
-        int n = srcGraph.getVerticesCount();
+    public static boolean BFSFF(int[][] matrix, final int start, final int end, Integer[] parent) {
+        int n = matrix.length;
         boolean[] visited = new boolean[n];
         LinkedList<Integer> queue = new LinkedList<>();
         queue.add(start);
@@ -123,7 +123,7 @@ public class GraphSearch {
         while (!queue.isEmpty()) {
             Integer u = queue.poll();
             for (int v = 0; v < n; v++) {
-                if (!visited[v] && srcGraph.isEdge(u,v)) {
+                if (!visited[v] && matrix[u][v] > 0) {
                     if (v == end){
                         parent[v] = u;
                         return true;

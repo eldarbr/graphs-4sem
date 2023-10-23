@@ -348,17 +348,19 @@ public class OutputGenerator {
         return sb.toString();
     }
 
-    public static String TenthTaskOutputGenerator(int source, int sink, final List<Edge> edgesFlows, int maxFlow) {
+    public static String TenthTaskOutputGenerator(int source, int sink, final List<int[]> edgesFlows, int maxFlow) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("%d - max flow from %d to %d\n".formatted(maxFlow, source+1, sink+1));
 
-        for (Edge edge : edgesFlows) {
-            sb.append(edge.from+1);
+        for (int[] edgeFlow : edgesFlows) {
+            sb.append(edgeFlow[0]+1);
             sb.append(" -> ");
-            sb.append(edge.to+1);
+            sb.append(edgeFlow[1]+1);
             sb.append(" = ");
-            sb.append(edge.weight);
+            sb.append(edgeFlow[2]);
+            sb.append(" / ");
+            sb.append(edgeFlow[3]);
             sb.append("\n");
         }
         return sb.toString();
