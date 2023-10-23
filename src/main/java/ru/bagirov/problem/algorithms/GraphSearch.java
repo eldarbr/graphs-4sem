@@ -112,12 +112,12 @@ public class GraphSearch {
         }
     }
 
-    public static boolean BFSFF(int[][] matrix, final int start, final int end, Integer[] parent) {
+    public static boolean BFSFF(int[][] matrix, final int start, final int end, int[] parent) {
         int n = matrix.length;
         boolean[] visited = new boolean[n];
         LinkedList<Integer> queue = new LinkedList<>();
         queue.add(start);
-        parent[start] = null;
+        parent[start] = -1;
         visited[start] = true;
 
         while (!queue.isEmpty()) {

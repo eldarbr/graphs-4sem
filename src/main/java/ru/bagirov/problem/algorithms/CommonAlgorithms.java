@@ -278,7 +278,8 @@ public class CommonAlgorithms {
         int source = sourceSink[0];
         int sink = sourceSink[1];
 
-        Integer[] parent = new Integer[sourceGraph.getVerticesCount()];
+        int[] parent = new int[sourceGraph.getVerticesCount()];
+        Arrays.fill(parent, -1);
 
         int maxFlow = 0;
         List<int[]> res = new ArrayList<>();
@@ -301,7 +302,6 @@ public class CommonAlgorithms {
 
 
             int v = sink;
-
             while (v != source) {
                 int u = parent[v];
                 myMatrix[u][v] -= pathFlow;
@@ -315,9 +315,7 @@ public class CommonAlgorithms {
                 if (sourceMatrix[i][j] > 0) {
                     int flow = sourceMatrix[i][j] - myMatrix[i][j];
                     res.add(new int[]{i, j, flow, sourceMatrix[i][j]});
-                } /*else if (sourceMatrix[i][j] == 0 && myMatrix[i][j] > 0) {
-                    res.add(new int[]{i, j, myMatrix[i][j], sourceMatrix[i][j]});
-                }*/
+                }
             }
         }
         return new Object[] {res, maxFlow};
